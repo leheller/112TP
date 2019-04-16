@@ -17,9 +17,12 @@ def init(data):
     data.confirmPassword = ""
     data.GPA = ""
     data.school = ""
+    data.bio = ""
+    data.counter = 0
+    data.counter2 = 0
 
 def mousePressed(event, data):
-    if event.x>=data.width//2-data.sizeX and event.x<=data.width//2+data.sizeX:
+    if event.x>=data.width//2-data.sizeX and event.x<=data.width//2+data.sizeX and event.y<data.height//2:
         if event.y>=data.sizeX and event.y<=data.sizeX+data.sizeY:
             data.boxState = (True,"username")
         elif event.y<=data.sizeX+2.5*data.sizeY and event.y>=data.sizeX+1.5*data.sizeY:
@@ -28,6 +31,14 @@ def mousePressed(event, data):
             data.boxState = (True,"confirmPassword")
         else:
             data.boxState = (False, "")
+    elif event.x>=data.width//3-data.sizeX//2 and event.x<=data.width//3+data.sizeX//2 and event.y<data.height-data.size:
+        if event.y>=data.sizeX+5.5*data.sizeY and event.y<=data.sizeX+6.5*data.sizeY:
+            data.boxState = (True,"GPA")
+        elif event.y>=data.sizeX+7*data.sizeY and event.y<=data.sizeX+8*data.sizeY:
+            data.boxState = (True,"school")
+    elif event.y>=data.sizeX+8.5*data.sizeY:
+        if event.x<=data.width//3+2*data.sizeX//3:
+            data.boxState = (True,"bio")
     else:
         data.boxState = (False, "")
         
@@ -35,12 +46,54 @@ def keyPressed(event, data):
     if event.keysym == "Return":
         data.boxState == "login"
     elif data.boxState[0] == True and data.boxState[1] == "username":
-        data.username += event.char
+        if event.keysym == "BackSpace":
+            data.username = data.username[:-1]
+        elif len(data.username)>22:
+            pass
+        else:
+            data.username += event.char
     elif data.boxState[0] == True and data.boxState[1] == "password":
-        data.password += event.char
+        if event.keysym == "BackSpace":
+            data.password = data.password[:-1]
+        elif len(data.password)>22:
+            pass
+        else:
+            data.password += event.char
     elif data.boxState[0] == True and data.boxState[1] == "confirmPassword":
-        data.confirmPassword += event.char
-        
+        if event.keysym == "BackSpace":
+            data.confirmPassword = data.confirmPassword[:-1]
+        elif len(data.confirmPassword)>22:
+            pass
+        else:
+            data.confirmPassword += event.char
+    elif data.boxState[0] == True and data.boxState[1] == "GPA":
+        if event.keysym == "BackSpace":
+            data.GPA = data.GPA[:-1]
+        elif len(data.GPA)>4:
+            pass
+        elif event.char in "1234567890.":
+            data.GPA += event.char
+    elif data.boxState[0] == True and data.boxState[1] == "school":
+        if event.keysym == "BackSpace":
+            data.school = data.school[:-1]
+        elif len(data.school)>14:
+            pass
+        else:
+            data.school += event.char
+    elif data.boxState[0] == True and data.boxState[1] == "bio":
+        if event.keysym == "BackSpace":
+            data.bio = data.bio[:-1]
+            data.counter -= 1
+        elif data.counter > 20:
+            data.bio += "\n"
+            data.counter = 0
+            data.counter2 += 1
+        elif data.counter2 > 7:
+            pass
+        else:
+            data.bio += event.char
+            data.counter += 1
+            
 def redrawAll(canvas, data):
     canvas.create_rectangle(0,0,data.width,data.height,fill="green")
     #username box
@@ -52,15 +105,23 @@ def redrawAll(canvas, data):
     canvas.create_rectangle(data.width//2-data.sizeX,data.sizeX+3*data.sizeY, data.width//2+data.sizeX,data.sizeX+4*data.sizeY,fill="white",activefill="yellow",width=2)
     #GPA box
     canvas.create_rectangle(data.width//3-data.sizeX//2,data.sizeX+5.5*data.sizeY, data.width//3+data.sizeX//2,data.sizeX+6.5*data.sizeY,fill="white",activefill="yellow",width=2)
+    #college box
+    canvas.create_rectangle(data.width//3-2*data.sizeX//3,data.sizeX+7*data.sizeY, data.width//3+2*data.sizeX//3,data.sizeX+8*data.sizeY,fill="white",activefill="yellow",width=2)
+    #bio box
+    canvas.create_rectangle(data.sizeX//2,data.sizeX+8.5*data.sizeY,data.width//3+2*data.sizeX//3,data.height-data.size,fill="white",activefill="yellow",width=2)
     #create profile text
-    canvas.create_text(data.width//2,data.size,anchor="c",font="ComicSans 28 bold",text="Create Profile",fill="white")
+    canvas.create_text(data.width//2,data.size,anchor="c",font=("Comic Sans MS","28","bold"),text="Create Profile",fill="white")
     #username
-    canvas.create_text(data.width//8,data.sizeX,anchor="c",font="ComicSans 18 bold",text="username:",fill="white")
+    canvas.create_text(data.width//8,data.sizeX,anchor="c",font=("Comic Sans MS","18","bold"),text="username:",fill="white")
     #password 
-    canvas.create_text(data.width//8,data.sizeX+1.5*data.sizeY,anchor="c",font="ComicSans 18 bold",text="password:",fill="white")
-    canvas.create_text(data.width//8,data.sizeX+3*data.sizeY,anchor="c",font="ComicSans 18 bold",text="confirm\npassword:",fill="white")
-    #GPA text
-    canvas.create_text(data.width//8,data.sizeX+5.8*data.sizeY,anchor="c",font="ComicSans 18 bold",text="GPA:",fill="white")
+    canvas.create_text(data.width//8,data.sizeX+1.5*data.sizeY,anchor="c",font=("Comic Sans MS","18","bold"),text="password:",fill="white")
+    canvas.create_text(data.width//8,data.sizeX+3*data.sizeY,anchor="c",font=("Comic Sans MS","18","bold"),text="confirm\npassword:",fill="white")
+    #GPA 
+    canvas.create_text(data.width//8,data.sizeX+5.8*data.sizeY,anchor="c",font=("Comic Sans MS","18","bold"),text="GPA:",fill="white")
+    #college
+    canvas.create_text(data.width//9,data.sizeX+7.5*data.sizeY,anchor="c",font=("Comic Sans MS","18","bold"),text="school:",fill="white")
+    #Bio
+    canvas.create_text(10,data.sizeX+9*data.sizeY,anchor="w",font=("Comic Sans MS","18","bold"),text="bio:",fill="white")
     #username text
     canvas.create_text(data.width//2,data.sizeX+data.sizeY//2,anchor="c",text=data.username)
     #password text
@@ -68,6 +129,10 @@ def redrawAll(canvas, data):
     canvas.create_text(data.width//2,data.sizeX+3.5*data.sizeY,anchor="c",text=data.confirmPassword)
     #GPA text
     canvas.create_text(data.width//3,data.sizeX+6*data.sizeY,anchor="c",text=data.GPA)
+    #college text
+    canvas.create_text(data.width//3,data.sizeX+7.5*data.sizeY,anchor="c",text=data.school)
+    #bio text
+    canvas.create_text(data.sizeX//2+10,data.sizeX+8.5*data.sizeY,anchor="nw",text=data.bio,fill="black")
     #image box
     canvas.create_rectangle(data.width//2,data.height//2,data.width-data.size,data.height-data.size,fill="black")
     #image text
