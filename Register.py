@@ -1,5 +1,4 @@
 #Registration page where user creates an account and profile
-#from 112TP import login
 
 from tkinter import *
 # Basic Animation Framework from 112 website
@@ -7,7 +6,7 @@ from tkinter import *
 # customize these functions
 ####################################
 
-def init(data):
+def registerInit(data):
     data.size = 30
     data.sizeX = 90
     data.sizeY = 30
@@ -20,8 +19,9 @@ def init(data):
     data.bio = ""
     data.counter = 0
     data.counter2 = 0
+    data.profilePic = ""
 
-def mousePressed(event, data):
+def registerMousePressed(event, data):
     if event.x>=data.width//2-data.sizeX and event.x<=data.width//2+data.sizeX and event.y<data.height//2:
         if event.y>=data.sizeX and event.y<=data.sizeX+data.sizeY:
             data.boxState = (True,"username")
@@ -36,13 +36,24 @@ def mousePressed(event, data):
             data.boxState = (True,"GPA")
         elif event.y>=data.sizeX+7*data.sizeY and event.y<=data.sizeX+8*data.sizeY:
             data.boxState = (True,"school")
+    elif event.y>=data.height//2 and event.x>=data.width//2:
+        #3 lines taken from stackoverflow --> https://stackoverflow.com/questions/3520493/python-show-in-finder
+        # import subprocess
+        # file_to_show = "/Applications/Photos.app"
+        # subprocess.call(["open", "-R", file_to_show])
+        
+        filename = "profilePic.gif"
+        data.profilePic = PhotoImage(file=filename)
     elif event.y>=data.sizeX+8.5*data.sizeY:
         if event.x<=data.width//3+2*data.sizeX//3:
-            data.boxState = (True,"bio")
+            data.boxState = (True,"bio")  
+    elif event.x>=3*data.width//4 and event.x<=3*data.width//4+2*data.size:
+        if event.y<=data.height//4+2*data.size and event.y>=data.height//4:
+            data.mode = "home"
     else:
         data.boxState = (False, "")
         
-def keyPressed(event, data):
+def registerKeyPressed(event, data):
     if event.keysym == "Return":
         data.boxState == "login"
     elif data.boxState[0] == True and data.boxState[1] == "username":
@@ -94,8 +105,10 @@ def keyPressed(event, data):
             data.bio += event.char
             data.counter += 1
             
-def redrawAll(canvas, data):
+def registerRedrawAll(canvas, data):
     canvas.create_rectangle(0,0,data.width,data.height,fill="green")
+    #continue
+    canvas.create_text(3*data.width//4+data.size,data.height//4+data.size,anchor="c",text="continue",font=("Comic Sans MS","16","bold"),fill="white",activefill="yellow")
     #username box
     canvas.create_rectangle(data.width//2-data.sizeX,data.sizeX,\
         data.width//2+data.sizeX,data.sizeX+data.sizeY,fill="white",\
@@ -134,50 +147,7 @@ def redrawAll(canvas, data):
     #bio text
     canvas.create_text(data.sizeX//2+10,data.sizeX+8.5*data.sizeY,anchor="nw",text=data.bio,fill="black")
     #image box
-    canvas.create_rectangle(data.width//2,data.height//2,data.width-data.size,data.height-data.size,fill="black")
+    try: 1/0#canvas.create_image(data.width//2, data.height//2, anchor="nw", image=data.profilePic)
+    except: canvas.create_rectangle(data.width//2,data.height//2,data.width-data.size,data.height-data.size,fill="black")
     #image text
     canvas.create_text(3*data.width/4-data.size//2,3*data.height/4-data.size//2,anchor="c",text="upload image",fill="white",activefill="yellow")
-
-####################################
-# use the run function as-is
-####################################
-
-def run(width=300, height=300):
-    def redrawAllWrapper(canvas, data):
-        canvas.delete(ALL)
-        canvas.create_rectangle(0, 0, data.width, data.height,
-                                fill='white', width=0)
-        redrawAll(canvas, data)
-        canvas.update()
-
-    def mousePressedWrapper(event, canvas, data):
-        mousePressed(event, data)
-        redrawAllWrapper(canvas, data)
-
-    def keyPressedWrapper(event, canvas, data):
-        keyPressed(event, data)
-        redrawAllWrapper(canvas, data)
-
-    # Set up data and call init
-    class Struct(object): pass
-    data = Struct()
-    data.width = width
-    data.height = height
-    root = Tk()
-    root.resizable(width=False, height=False) # prevents resizing window
-    init(data)
-    # create the root and the canvas
-    canvas = Canvas(root, width=data.width, height=data.height)
-    canvas.configure(bd=0, highlightthickness=0)
-    canvas.pack()
-    # set up events
-    root.bind("<Button-1>", lambda event:
-                            mousePressedWrapper(event, canvas, data))
-    root.bind("<Key>", lambda event:
-                            keyPressedWrapper(event, canvas, data))
-    redrawAllWrapper(canvas, data)
-    # and launch the app
-    root.mainloop()  # blocks until window is closed
-    print("bye!")
-
-run(500, 500)
