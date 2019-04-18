@@ -7,16 +7,14 @@ from tkinter import *
 # customize these functions
 ####################################
 
-def homeInit(data):
-    data.username = "Lauren"
-    data.GPA = "4.0"
-    data.school = "CIT"
-    data.bio = "I like to make maple\nsyrup and ski!"
-    data.size = 30
 
 def homeMousePressed(event, data):
-    pass
-
+    if event.x>=(10+2*data.width//3) and event.y>=(2*data.size+data.height//2) and event.x<=(data.width-10) and event.y<=(data.height-2*data.size):
+        data.mode = "profile"
+    elif event.x>=10+data.width//3 and event.x<=2*data.width//3-10:
+        if event.y>=2*data.size+data.height//2 and event.y<=data.height-2*data.size:
+            data.mode = "messaging"
+            
 def homeKeyPressed(event, data):
     pass
 

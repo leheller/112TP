@@ -6,18 +6,7 @@ from tkinter import *
 # customize these functions
 ####################################
 
-def loginInit(data):
-    data.sizeX1 = 70
-    data.sizeY1 = 20
-    data.size1 = 170
-    data.color1 = "white"
-    data.color2 = "yellow"
-    data.boxState = (False, "")
-    data.username1 = ""
-    data.password1 = ""
-
 def loginMousePressed(event, data):
-    print(event.x,event.y)
     if event.x>=data.width//2-data.sizeX1 and event.x<=data.width//2+data.sizeX1:
         if event.y>=data.height//2-data.sizeY1 and event.y<=data.height//2+data.sizeY1:
             data.boxState = (True,"username")
@@ -29,7 +18,6 @@ def loginMousePressed(event, data):
             data.boxState = ("Register")
     if event.x>=data.width//2-50 and event.x<=data.width//2+50:
         if event.y>=data.height//2+data.size1-15 and event.y<=data.height//2+data.size1+15:
-            print("hi")
             data.mode = "Register"
     else:
         data.boxState = (False, 0, 0)

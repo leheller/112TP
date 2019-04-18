@@ -6,21 +6,6 @@ from tkinter import *
 # customize these functions
 ####################################
 
-def registerInit(data):
-    data.size = 30
-    data.sizeX = 90
-    data.sizeY = 30
-    data.boxState = (False,"")
-    data.username = ""
-    data.password = ""
-    data.confirmPassword = ""
-    data.GPA = ""
-    data.school = ""
-    data.bio = ""
-    data.counter = 0
-    data.counter2 = 0
-    data.profilePic = ""
-
 def registerMousePressed(event, data):
     if event.x>=data.width//2-data.sizeX and event.x<=data.width//2+data.sizeX and event.y<data.height//2:
         if event.y>=data.sizeX and event.y<=data.sizeX+data.sizeY:

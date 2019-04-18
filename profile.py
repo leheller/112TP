@@ -1,79 +1,43 @@
 #Profile page for all of the potential matches
 
-# Basic Animation Framework
 from tkinter import *
-####################################
-#From 112 website
-# customize these functions
-####################################
 
-def init(data):
-    data.username = "Lauren"
-    data.GPA = "4.0"
-    data.school = "CIT"
-    data.bio = "I like to make maple\nsyrup and ski!"
-    data.size = 30
-
-def mousePressed(event, data):
-    # use event.x and event.y
+def profileMousePressed(event, data):
+    if (event.x>=10) and (event.y>=2*data.size+data.height//2) and (event.x<=data.width//3-10) and (event.y<=data.height-2*data.size):
+        data.color1 = "yellow"
+    elif event.x>=10 and event.x<=data.size+10:
+        if event.y>=10 and event.y<=data.size+10:
+            data.mode = "home"
+    elif event.x>=2*data.width//3+10 and event.x<=10+2*data.width//3+3.5*data.size:
+        if event.y>=2*data.height//3 and event.y<=5*data.height//6:
+            if len(data.otherProfiles) > 1:
+                data.otherProfiles.pop(0)
+                data.color1 = "white"
+        
+def profileKeyPressed(event, data):
     pass
 
-def keyPressed(event, data):
-    pass
-
-def redrawAll(canvas, data):
+def profileRedrawAll(canvas, data):
     canvas.create_rectangle(0,0,data.width,data.height,fill="green")
     #Name
-    canvas.create_text(data.width//2+10,data.size,anchor="nw",font=("Comic Sans MS","24","bold"),text="Name: "+data.username)
+    canvas.create_text(data.width//2+10,data.size,anchor="nw",font=("Comic Sans MS","24","bold"),text="Name: "+data.otherProfiles[0][0])
     #Picture
     canvas.create_rectangle(10,10,data.width//2,data.height//2,fill="white")
     #GPA
-    canvas.create_text(data.width//2+10,2.5*data.size,anchor="nw",font=("Comic Sans MS","16","bold"),text="GPA: "+data.GPA)
+    canvas.create_text(data.width//2+10,2.5*data.size,anchor="nw",font=("Comic Sans MS","16","bold"),text="GPA: "+data.otherProfiles[0][1])
     #College
-    canvas.create_text(data.width//2+10,4*data.size,anchor="nw",font=("Comic Sans MS","16","bold"),text="School: "+data.school)
+    canvas.create_text(data.width//2+10,4*data.size,anchor="nw",font=("Comic Sans MS","16","bold"),text="School: "+data.otherProfiles[0][2])
     #Bio
-    canvas.create_text(data.width//2+10,5.5*data.size,anchor="nw",font=("Comic Sans MS","16","bold"),text="Bio: "+data.bio)
-
-####################################
-# use the run function as-is
-####################################
-
-def run(width=300, height=300):
-    def redrawAllWrapper(canvas, data):
-        canvas.delete(ALL)
-        canvas.create_rectangle(0, 0, data.width, data.height,
-                                fill='white', width=0)
-        redrawAll(canvas, data)
-        canvas.update()
-
-    def mousePressedWrapper(event, canvas, data):
-        mousePressed(event, data)
-        redrawAllWrapper(canvas, data)
-
-    def keyPressedWrapper(event, canvas, data):
-        keyPressed(event, data)
-        redrawAllWrapper(canvas, data)
-
-    # Set up data and call init
-    class Struct(object): pass
-    data = Struct()
-    data.width = width
-    data.height = height
-    root = Tk()
-    root.resizable(width=False, height=False) # prevents resizing window
-    init(data)
-    # create the root and the canvas
-    canvas = Canvas(root, width=data.width, height=data.height)
-    canvas.configure(bd=0, highlightthickness=0)
-    canvas.pack()
-    # set up events
-    root.bind("<Button-1>", lambda event:
-                            mousePressedWrapper(event, canvas, data))
-    root.bind("<Key>", lambda event:
-                            keyPressedWrapper(event, canvas, data))
-    redrawAllWrapper(canvas, data)
-    # and launch the app
-    root.mainloop()  # blocks until window is closed
-    print("bye!")
-
-run(500, 500)
+    canvas.create_text(data.width//2+10,5.5*data.size,anchor="nw",font=("Comic Sans MS","16","bold"),text="Bio: "+data.otherProfiles[0][3])
+    #Go on a date
+    canvas.create_rectangle(10,2*data.size+data.height//2,data.width//3-10,data.height-2*data.size,fill=data.color1,activefill="yellow")
+    canvas.create_text(data.width//5-data.size//2,4*data.height//5-data.size,anchor="c",text="ask "+data.otherProfiles[0][0]+" on a date",font=("Comic Sans MS","12","bold"))
+    #Message
+    canvas.create_rectangle(10+data.width//3,2*data.size+data.height//2,2*data.width//3-10,data.height-2*data.size,fill="white",activefill="yellow")
+    canvas.create_text(data.width//2,4*data.height//5-data.size,anchor="c",text="message "+data.otherProfiles[0][0],font=("Comic Sans MS","12","bold"))
+    #Next
+    canvas.create_polygon(2*data.width//3+10,data.height-3.5*data.size,10+2*data.width//3,data.height-5*data.size,10+2*data.width//3+2*data.size,data.height-5*data.size,10+2*data.width//3+2*data.size,data.height-6*data.size,10+2*data.width//3+3.5*data.size,data.height-4.25*data.size,10+2*data.width//3+2*data.size,data.height-2.5*data.size,10+2*data.width//3+2*data.size,data.height-3.5*data.size,fill="white",activefill="yellow")
+    canvas.create_text(2.3*data.width//3+10,data.height-4.25*data.size,anchor="c",text="see more CMU singles",font=("Comic Sans MS","10","bold"))
+    #Home
+    canvas.create_rectangle(10,10,data.size+10,data.size+10,fill="white",activefill="yellow")
+    canvas.create_text(25,25,text="HOME",font=("Comic Sans MS","8","bold"),anchor="center")   

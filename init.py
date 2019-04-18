@@ -4,6 +4,8 @@ from tkinter import *
 from Register import *
 from login import *
 from home import *
+from profile import *
+from messaging import *
 from PIL import Image
 ####################################
 # init
@@ -33,6 +35,10 @@ def init(data):
     data.GPA = ""
     data.school = ""
     data.bio = ""
+    data.messages = []
+    data.myMessages = []
+    data.text = ""
+    data.otherProfiles = [["John","3.49","SCS","I like dogs!"],["Bob","4.0","CIT","hi"],["David","2.7","CFA","Just hangin"]]
 
 
 ####################################
@@ -43,18 +49,24 @@ def mousePressed(event, data):
     if (data.mode == "login"):   loginMousePressed(event, data)
     elif (data.mode == "Register"): registerMousePressed(event, data)
     elif (data.mode == "home"): homeMousePressed(event, data)
+    elif (data.mode == "profile"): profileMousePressed(event, data)
+    elif (data.mode == "messaging"): messagingMousePressed(event, data)
     #elif (data.mode == "messaging"):  messagingMousePressed(event, data)
 
 def keyPressed(event, data):
     if (data.mode == "login"):   loginKeyPressed(event, data)
     elif (data.mode == "Register"): registerKeyPressed(event, data)
     elif (data.mode == "home"): homeKeyPressed(event, data)
+    elif (data.mode == "profile"): profileKeyPressed(event, data)
+    elif (data.mode == "messaging"): messagingKeyPressed(event, data)
     #elif (data.mode == "messaging"):    messagingKeyPressed(event, data)
 
 def redrawAll(canvas, data):
     if (data.mode == "login"): loginRedrawAll(canvas, data)
     elif (data.mode == "Register"):   registerRedrawAll(canvas, data)
     elif (data.mode == "home"): homeRedrawAll(canvas, data)
+    elif (data.mode == "profile"): profileRedrawAll(canvas, data)
+    elif (data.mode == "messaging"): messagingRedrawAll(canvas, data)
     #elif (data.mode == "messaging"):       messagingRedrawAll(canvas, data)
 
 
