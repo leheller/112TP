@@ -53,5 +53,5 @@ def loginRedrawAll(canvas, data):
     #username text
     canvas.create_text(data.width//2,data.height//2,anchor="c",text=data.username1)
     #password text
-    canvas.create_text(data.width//2,data.height//2+2.5*data.sizeY1,anchor="c",text=data.password1)
+    canvas.create_text(data.width//2,data.height//2+2.5*data.sizeY1,anchor="c",text="*"*len(data.password1))
 

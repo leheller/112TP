@@ -14,6 +14,9 @@ def homeMousePressed(event, data):
     elif event.x>=10+data.width//3 and event.x<=2*data.width//3-10:
         if event.y>=2*data.size+data.height//2 and event.y<=data.height-2*data.size:
             data.mode = "messaging"
+    elif event.x>=10 and event.x<=2*data.width//3-10:
+        if event.y>=2*data.size+data.height//2 and data.height-2*data.size:
+            data.mode = "dates"
             
 def homeKeyPressed(event, data):
     pass

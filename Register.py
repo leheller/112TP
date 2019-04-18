@@ -5,6 +5,10 @@ from tkinter import *
 ####################################
 # customize these functions
 ####################################
+def checkPassword(data):
+    if data.password != data.confirmPassword:
+        return "passwords must match!>:("
+    else: return True
 
 def registerMousePressed(event, data):
     if event.x>=data.width//2-data.sizeX and event.x<=data.width//2+data.sizeX and event.y<data.height//2:
@@ -34,7 +38,8 @@ def registerMousePressed(event, data):
             data.boxState = (True,"bio")  
     elif event.x>=3*data.width//4 and event.x<=3*data.width//4+2*data.size:
         if event.y<=data.height//4+2*data.size and event.y>=data.height//4:
-            data.mode = "home"
+            if checkPassword(data) == True:
+                data.mode = "home"
     else:
         data.boxState = (False, "")
         
@@ -123,8 +128,8 @@ def registerRedrawAll(canvas, data):
     #username text
     canvas.create_text(data.width//2,data.sizeX+data.sizeY//2,anchor="c",text=data.username)
     #password text
-    canvas.create_text(data.width//2,data.sizeX+2*data.sizeY,anchor="c",text=data.password)
-    canvas.create_text(data.width//2,data.sizeX+3.5*data.sizeY,anchor="c",text=data.confirmPassword)
+    canvas.create_text(data.width//2,data.sizeX+2*data.sizeY,anchor="c",text="*"*len(data.password))
+    canvas.create_text(data.width//2,data.sizeX+3.5*data.sizeY,anchor="c",text="*"*len(data.confirmPassword))
     #GPA text
     canvas.create_text(data.width//3,data.sizeX+6*data.sizeY,anchor="c",text=data.GPA)
     #college text
@@ -136,3 +141,6 @@ def registerRedrawAll(canvas, data):
     except: canvas.create_rectangle(data.width//2,data.height//2,data.width-data.size,data.height-data.size,fill="black")
     #image text
     canvas.create_text(3*data.width/4-data.size//2,3*data.height/4-data.size//2,anchor="c",text="upload image",fill="white",activefill="yellow")
+    if checkPassword(data) != True:
+        canvas.create_rectangle(data.width-2*data.size,0,data.width,2*data.size,fill="red")
+        canvas.create_text(data.width-2*data.size,data.size,anchor="w",text="passwords\nmust\nmatch!",font=("Comic Sans MS","12","bold"))

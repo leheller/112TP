@@ -1,11 +1,13 @@
 #Main function to run Seeking@CMU
 # Mode Demo
+import random
 from tkinter import *
 from Register import *
 from login import *
 from home import *
 from profile import *
 from messaging import *
+from dates import *
 from PIL import Image
 ####################################
 # init
@@ -38,7 +40,9 @@ def init(data):
     data.messages = []
     data.myMessages = []
     data.text = ""
+    data.messagingProfiles = []
     data.otherProfiles = [["John","3.49","SCS","I like dogs!"],["Bob","4.0","CIT","hi"],["David","2.7","CFA","Just hangin"]]
+    data.matchedProfiles = []
 
 
 ####################################
@@ -51,6 +55,7 @@ def mousePressed(event, data):
     elif (data.mode == "home"): homeMousePressed(event, data)
     elif (data.mode == "profile"): profileMousePressed(event, data)
     elif (data.mode == "messaging"): messagingMousePressed(event, data)
+    elif (data.mode == "dates"): datesMousePressed(event, data)
     #elif (data.mode == "messaging"):  messagingMousePressed(event, data)
 
 def keyPressed(event, data):
@@ -67,6 +72,7 @@ def redrawAll(canvas, data):
     elif (data.mode == "home"): homeRedrawAll(canvas, data)
     elif (data.mode == "profile"): profileRedrawAll(canvas, data)
     elif (data.mode == "messaging"): messagingRedrawAll(canvas, data)
+    elif (data.mode == "dates"): datesRedrawAll(canvas, data)
     #elif (data.mode == "messaging"):       messagingRedrawAll(canvas, data)
 
 
