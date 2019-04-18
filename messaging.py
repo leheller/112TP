@@ -57,6 +57,7 @@ def messagingKeyPressed(event, data):
     else:
         data.text += event.char
 
+
 def messagingRedrawAll(canvas, data):
     canvas.create_rectangle(0,0,data.width,data.height,fill="green")
     if len(data.messagingProfiles) == 0:

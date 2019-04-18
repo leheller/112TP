@@ -8,9 +8,30 @@ from home import *
 from profile import *
 from messaging import *
 from dates import *
-from cv2 import *
-#from message_server import *
-from PIL import Image
+import socket
+import threading
+from queue import Queue
+####################################
+HOST = "" # put your IP address here if playing on multiple computers
+PORT = 50003
+
+server = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+
+server.connect((HOST,PORT))
+print("connected to server")
+
+def handleServerMsg(server, serverMsg):
+  server.setblocking(1)
+  msg = ""
+  command = ""
+  while True:
+    msg += server.recv(10).decode("UTF-8")
+    command = msg.split("\n")
+    while (len(command) > 1):
+      readyMsg = command[0]
+      msg = "\n".join(command[1:])
+      serverMsg.put(readyMsg)
+      command = msg.split("\n")
 ####################################
 # init
 ####################################
@@ -45,7 +66,6 @@ def init(data):
     data.otherProfiles = [["John","3.49","SCS","I like dogs!"],["Bob","4.0","CIT","hi"],["David","2.7","CFA","Just hangin"]]
     data.matchedProfiles = []
     data.myProfile = []
-    data.image = ""
 
 
 ####################################

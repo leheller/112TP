@@ -1,5 +1,5 @@
 #Registration page where user creates an account and profile
-
+from cv2 import *
 from tkinter import *
 # Basic Animation Framework from 112 website
 ####################################
@@ -9,6 +9,30 @@ def checkPassword(data):
     if data.password != data.confirmPassword:
         return "passwords must match!>:("
     else: return True
+   
+def takePicture(data):
+    cam = cv2.VideoCapture(0)
+    cv2.namedWindow("seeking@CMU")
+    img_counter = 0
+    while True:
+        ret, frame = cam.read()
+        cv2.imshow("test", frame)
+        if not ret:
+            break
+        k = cv2.waitKey(1)
+        if k%256 == 27:
+            # ESC pressed
+            print("Escape hit, closing...")
+            break
+        elif k%256 == 32:
+            # SPACE pressed
+            img_name = "opencv_frame_{}.png".format(img_counter)
+            cv2.imwrite(img_name, frame)
+            print("{} written!".format(img_name))
+            img_counter += 1
+    cam.release()
+
+cv2.destroyAllWindows()
 
 def registerMousePressed(event, data):
     if event.x>=data.width//2-data.sizeX and event.x<=data.width//2+data.sizeX and event.y<data.height//2:
@@ -39,6 +63,7 @@ def registerMousePressed(event, data):
     elif event.x>=3*data.width//4 and event.x<=3*data.width//4+2*data.size:
         if event.y<=data.height//4+2*data.size and event.y>=data.height//4:
             if checkPassword(data) == True:
+                #members += [(data.username,data.password)]
                 data.mode = "home"
     else:
         data.boxState = (False, "")
@@ -96,6 +121,7 @@ def registerKeyPressed(event, data):
             data.counter += 1
             
 def registerRedrawAll(canvas, data):
+    data.myProfile = [data.username,data.GPA,data.school,data.bio]
     canvas.create_rectangle(0,0,data.width,data.height,fill="green")
     #continue
     canvas.create_text(3*data.width//4+data.size,data.height//4+data.size,anchor="c",text="continue",font=("Comic Sans MS","16","bold"),fill="white",activefill="yellow")

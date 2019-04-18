@@ -8,7 +8,11 @@ from tkinter import *
 
 def loginMousePressed(event, data):
     if event.x>=data.width//2-data.sizeX1 and event.x<=data.width//2+data.sizeX1:
-        if event.y>=data.height//2-data.sizeY1 and event.y<=data.height//2+data.sizeY1:
+        if event.y>=data.height//2-data.sizeX1-20 and event.y<=data.height//2-data.sizeX1+20:
+            if (data.username1, data.password1) in members:
+                data.mode = "home"
+            else: pass
+        elif event.y>=data.height//2-data.sizeY1 and event.y<=data.height//2+data.sizeY1:
             data.boxState = (True,"username")
     if event.x>=data.width//2-data.sizeX1 and event.x<=data.width//2+data.sizeX1:
         if event.y<=data.height//2+3.5*data.sizeY1 and event.y>=data.height//2+1.5*data.sizeY1:
@@ -45,7 +49,7 @@ def loginRedrawAll(canvas, data):
         font="ComicSans 28 bold",text="Seeking@CMU",fill="white")
     #login
     canvas.create_text(data.width//2,data.height//2-data.sizeX1,anchor="c",\
-        font="ComicSans 18 bold",text="login",fill="white")
+        font="ComicSans 18 bold",text="login",fill="white",activefill="yellow")
     #register
     canvas.create_text(data.width//2,data.height//2+data.size1,anchor="c",\
         font="ComicSans 18 bold",text="register",fill="white",\
@@ -54,4 +58,7 @@ def loginRedrawAll(canvas, data):
     canvas.create_text(data.width//2,data.height//2,anchor="c",text=data.username1)
     #password text
     canvas.create_text(data.width//2,data.height//2+2.5*data.sizeY1,anchor="c",text="*"*len(data.password1))
+    #if checkPassword(data) != True:
+        #canvas.create_rectangle(data.width-2*data.size,0,data.width,2*data.size,fill="red")
+        #canvas.create_text(data.width-2*data.size,data.size,anchor="w",text="passwords\nmust\nmatch!",font=("Comic Sans MS","12","bold"))
 
