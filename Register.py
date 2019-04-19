@@ -36,7 +36,8 @@ def takePicture(data):
     cv2.destroyAllWindows()
     #Next few lines inspired from online (https://stackoverflow.com/questions/52375035/cropping-an-image-in-tkinter/52375463#52375463)
     im = Image.open(img_name)
-    cropped = im.crop([0, 0, 240, 240])
+    #cropped = im.crop([1280, 1280, 1640, 1640])
+    cropped = im.crop([520, 270, 760, 510])
     data.image = ImageTk.PhotoImage(cropped) 
 
 def registerMousePressed(event, data):
@@ -62,7 +63,7 @@ def registerMousePressed(event, data):
     elif event.x>=3*data.width//4 and event.x<=3*data.width//4+2*data.size:
         if event.y<=data.height//4+2*data.size and event.y>=data.height//4:
             if checkPassword(data) == True:
-                #members += [(data.username,data.password)]
+                data.msg = data.myProfile
                 data.mode = "home"
     else:
         data.boxState = (False, "")

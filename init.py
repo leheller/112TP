@@ -8,6 +8,7 @@ from home import *
 from profile import *
 from messaging import *
 from dates import *
+from sorting import *
 from cv2 import *
 from PIL import ImageTk,Image 
 ####################################
@@ -41,15 +42,18 @@ def init(data):
     data.myMessages = []
     data.text = ""
     data.messagingProfiles = []
-    data.otherProfiles = [["John","3.49","SCS","I like dogs!"],["Bob","4.0","CIT","hi"],["David","2.7","CFA","Just hangin"]]
+    data.otherProfs = set(("John","3.49","CIT","ncjoewbv"),("Bob","2","SCS","hncubiowvhodb2"))
+    data.otherProfiles = []
     data.matchedProfiles = []
     data.myProfile = ["","","",""]
     data.image = ""
+    data.msg = ""
 
 
 ####################################
-# mode dispatcher
+# mode dispatcher from 112 website
 ####################################
+
 
 def mousePressed(event, data):
     if (data.mode == "login"):   loginMousePressed(event, data)
@@ -76,6 +80,42 @@ def redrawAll(canvas, data):
     elif (data.mode == "messaging"): messagingRedrawAll(canvas, data)
     elif (data.mode == "dates"): datesRedrawAll(canvas, data)
     #elif (data.mode == "messaging"):       messagingRedrawAll(canvas, data)
+    
+def timerFired(data):
+    # timerFired receives instructions and executes them
+    while (serverMsg.qsize() > 0):
+        msg = serverMsg.get(False)
+        print(msg)
+        try:
+            print("received: ", msg, "\n")
+            #New profile recieved (only adds to profile set if its not my profile)
+            if type(msg) == list:
+                if data.myProfile == msg:
+                    pass
+                else:
+                    data.otherProfs += tuple(msg)
+            else:
+                msg = msg.split()
+                command = msg[0]
+    
+                if (command == "myIDis"):
+                    myPID = msg[1]
+                    data.me.changePID(myPID)
+    
+                elif (command == "playerWrote"):
+                    PID = msg[1]
+                    text = msg[2]
+                    data.otherStrangers[PID].writeText(text)
+            
+                elif (command == "playerMatched"):
+                    PID = msg[1]
+                    dx = int(msg[2])
+                    dy = int(msg[3])
+                    data.otherStrangers[PID].move(dx, dy)
+          
+        except:
+            print("failed")
+        serverMsg.task_done()
 
 
 ####################################
@@ -83,11 +123,9 @@ def redrawAll(canvas, data):
 # use the run function as-is
 ####################################
 
-def run(width=300, height=300):
+def run(width, height, serverMsg=None, server=None):
     def redrawAllWrapper(canvas, data):
         canvas.delete(ALL)
-        canvas.create_rectangle(0, 0, data.width, data.height,
-                                fill='white', width=0)
         redrawAll(canvas, data)
         canvas.update()
 
@@ -99,26 +137,35 @@ def run(width=300, height=300):
         keyPressed(event, data)
         redrawAllWrapper(canvas, data)
 
+    def timerFiredWrapper(canvas, data):
+        timerFired(data)
+        redrawAllWrapper(canvas, data)
+        # pause, then call timerFired again
+        canvas.after(data.timerDelay, timerFiredWrapper, canvas, data)
     # Set up data and call init
     class Struct(object): pass
     data = Struct()
+    data.server = server
+    data.serverMsg = serverMsg
     data.width = width
     data.height = height
-    root = Tk()
-    root.resizable(width=False, height=False) # prevents resizing window
+    data.timerDelay = 100 # milliseconds
     init(data)
     # create the root and the canvas
+    root = Tk()
     canvas = Canvas(root, width=data.width, height=data.height)
-    canvas.configure(bd=0, highlightthickness=0)
     canvas.pack()
     # set up events
     root.bind("<Button-1>", lambda event:
                             mousePressedWrapper(event, canvas, data))
     root.bind("<Key>", lambda event:
                             keyPressedWrapper(event, canvas, data))
-    redrawAllWrapper(canvas, data)
+    timerFiredWrapper(canvas, data)
     # and launch the app
     root.mainloop()  # blocks until window is closed
     print("bye!")
 
-run(500, 500)
+serverMsg = Queue(100)
+threading.Thread(target = handleServerMsg, args = (server, serverMsg)).start()
+
+run(400, 400, serverMsg, server)
