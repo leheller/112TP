@@ -1,6 +1,7 @@
 #Registration page where user creates an account and profile
 from cv2 import *
 from tkinter import *
+from PIL import ImageTk,Image  
 # Basic Animation Framework from 112 website
 ####################################
 # customize these functions
@@ -9,7 +10,8 @@ def checkPassword(data):
     if data.password != data.confirmPassword:
         return "passwords must match!>:("
     else: return True
-   
+ 
+#The code in this function is from stackoverflow (https://stackoverflow.com/questions/34588464/python-how-to-capture-image-from-webcam-on-click-using-opencv)
 def takePicture(data):
     cam = cv2.VideoCapture(0)
     cv2.namedWindow("seeking@CMU")
@@ -31,8 +33,11 @@ def takePicture(data):
             print("{} written!".format(img_name))
             img_counter += 1
     cam.release()
-
-cv2.destroyAllWindows()
+    cv2.destroyAllWindows()
+    #Next few lines inspired from online (https://stackoverflow.com/questions/52375035/cropping-an-image-in-tkinter/52375463#52375463)
+    im = Image.open(img_name)
+    cropped = im.crop([0, 0, 240, 240])
+    data.image = ImageTk.PhotoImage(cropped) 
 
 def registerMousePressed(event, data):
     if event.x>=data.width//2-data.sizeX and event.x<=data.width//2+data.sizeX and event.y<data.height//2:
@@ -50,13 +55,7 @@ def registerMousePressed(event, data):
         elif event.y>=data.sizeX+7*data.sizeY and event.y<=data.sizeX+8*data.sizeY:
             data.boxState = (True,"school")
     elif event.y>=data.height//2 and event.x>=data.width//2:
-        #3 lines taken from stackoverflow --> https://stackoverflow.com/questions/3520493/python-show-in-finder
-        # import subprocess
-        # file_to_show = "/Applications/Photos.app"
-        # subprocess.call(["open", "-R", file_to_show])
-        
-        filename = "profilePic.gif"
-        data.profilePic = PhotoImage(file=filename)
+        takePicture(data)
     elif event.y>=data.sizeX+8.5*data.sizeY:
         if event.x<=data.width//3+2*data.sizeX//3:
             data.boxState = (True,"bio")  
@@ -121,7 +120,7 @@ def registerKeyPressed(event, data):
             data.counter += 1
             
 def registerRedrawAll(canvas, data):
-    data.myProfile = [data.username,data.GPA,data.school,data.bio]
+    data.myProfile = [data.username,data.GPA,data.school,data.bio,data.image]
     canvas.create_rectangle(0,0,data.width,data.height,fill="green")
     #continue
     canvas.create_text(3*data.width//4+data.size,data.height//4+data.size,anchor="c",text="continue",font=("Comic Sans MS","16","bold"),fill="white",activefill="yellow")
@@ -162,11 +161,12 @@ def registerRedrawAll(canvas, data):
     canvas.create_text(data.width//3,data.sizeX+7.5*data.sizeY,anchor="c",text=data.school)
     #bio text
     canvas.create_text(data.sizeX//2+10,data.sizeX+8.5*data.sizeY,anchor="nw",text=data.bio,fill="black")
-    #image box
-    try: 1/0#canvas.create_image(data.width//2, data.height//2, anchor="nw", image=data.profilePic)
-    except: canvas.create_rectangle(data.width//2,data.height//2,data.width-data.size,data.height-data.size,fill="black")
     #image text
     canvas.create_text(3*data.width/4-data.size//2,3*data.height/4-data.size//2,anchor="c",text="upload image",fill="white",activefill="yellow")
     if checkPassword(data) != True:
         canvas.create_rectangle(data.width-2*data.size,0,data.width,2*data.size,fill="red")
         canvas.create_text(data.width-2*data.size,data.size,anchor="w",text="passwords\nmust\nmatch!",font=("Comic Sans MS","12","bold"))
+    #image box
+    try: 
+        canvas.create_image(data.width//2, data.height//2, anchor="nw", image=data.image)
+    except: canvas.create_rectangle(data.width//2,data.height//2,data.width-data.size,data.height-data.size,fill="black")

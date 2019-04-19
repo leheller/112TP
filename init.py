@@ -9,8 +9,7 @@ from profile import *
 from messaging import *
 from dates import *
 from cv2 import *
-#from message_server import *
-from PIL import Image
+from PIL import ImageTk,Image 
 ####################################
 # init
 ####################################
@@ -44,7 +43,7 @@ def init(data):
     data.messagingProfiles = []
     data.otherProfiles = [["John","3.49","SCS","I like dogs!"],["Bob","4.0","CIT","hi"],["David","2.7","CFA","Just hangin"]]
     data.matchedProfiles = []
-    data.myProfile = []
+    data.myProfile = ["","","",""]
     data.image = ""
 
 

@@ -1,7 +1,9 @@
 #Home screen, shows profile
 
 # Basic Animation Framework
+from cv2 import *
 from tkinter import *
+from PIL import ImageTk,Image  
 ####################################
 #From 112 website
 # customize these functions
@@ -26,7 +28,7 @@ def homeRedrawAll(canvas, data):
     #Name
     canvas.create_text(data.width//2+10,data.size,anchor="nw",font=("Comic Sans MS","24","bold"),text="Name: "+data.username)
     #Picture
-    canvas.create_rectangle(10,10,data.width//2,data.height//2,fill="white")
+    canvas.create_image(10, 10, anchor="nw", image=data.image)
     #GPA
     canvas.create_text(data.width//2+10,2.5*data.size,anchor="nw",font=("Comic Sans MS","16","bold"),text="GPA: "+data.GPA)
     #College
