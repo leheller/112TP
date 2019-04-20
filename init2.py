@@ -8,30 +8,16 @@ from home import *
 from profile import *
 from messaging import *
 from dates import *
-import socket
-import threading
-from queue import Queue
-####################################
-HOST = "" # put your IP address here if playing on multiple computers
-PORT = 50003
-
-server = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-
-server.connect((HOST,PORT))
-print("connected to server")
-
-def handleServerMsg(server, serverMsg):
-  server.setblocking(1)
-  msg = ""
-  command = ""
-  while True:
-    msg += server.recv(10).decode("UTF-8")
-    command = msg.split("\n")
-    while (len(command) > 1):
-      readyMsg = command[0]
-      msg = "\n".join(command[1:])
-      serverMsg.put(readyMsg)
-      command = msg.split("\n")
+from pickleFile import *
+from cv2 import *
+from PIL import ImageTk,Image 
+###################
+#initialize known profiles
+# profilesFilename = "profiles.py"
+# with open(profilesFilename,"rb") as rfp:
+#     profiles = pickle.load(rfp)
+#     data.profiles = profiles
+# print(data.profiles)
 ####################################
 # init
 ####################################
@@ -63,11 +49,11 @@ def init(data):
     data.myMessages = []
     data.text = ""
     data.messagingProfiles = []
-    data.otherProfiles = [["John","3.49","SCS","I like dogs!"],["Bob","4.0","CIT","hi"],["David","2.7","CFA","Just hangin"]]
+    data.otherProfiles = ()
     data.matchedProfiles = []
-    data.myProfile = []
-    data.otherStrangers = dict()
-
+    data.myProfile = ("","","","")
+    data.image = ""
+    data.profiles = ()
 
 ####################################
 # mode dispatcher

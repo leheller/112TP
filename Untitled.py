@@ -1,29 +1,12 @@
-import cv2
+import pickle
 
-cam = cv2.VideoCapture(0)
+example_dict = {1:"6",2:"2",3:"f"}
 
-cv2.namedWindow("test")
 
-img_counter = 0
+pickle_out = open("dict.pickle","wb")
+pickle.dump(example_dict, pickle_out)
+pickle_out.close()
 
-while True:
-    ret, frame = cam.read()
-    cv2.imshow("test", frame)
-    if not ret:
-        break
-    k = cv2.waitKey(1)
+pickle_in = open("dict.pickle", "rb")
 
-    if k%256 == 27:
-        # ESC pressed
-        print("Escape hit, closing...")
-        break
-    elif k%256 == 32:
-        # SPACE pressed
-        img_name = "opencv_frame_{}.png".format(img_counter)
-        cv2.imwrite(img_name, frame)
-        print("{} written!".format(img_name))
-        img_counter += 1
-
-cam.release()
-
-cv2.destroyAllWindows()
+output_dict = pickle.load(pickle_in)

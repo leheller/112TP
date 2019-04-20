@@ -20,7 +20,7 @@ def messagingTexts(canvas,data):
         canvas.create_text(x3,y3,font=("Comic Sans MS","12","bold"),anchor="center",text=message)
         i += 2
     try: 
-        for message in data.messagingProfiles[0][4]:
+        for message in data.messagingProfiles[0][5]:
             x1 = 2*data.width//3 - 10
             x2 = data.width - 10
             y1 = data.height-5*data.size - i*data.size
@@ -40,7 +40,7 @@ def messagingMousePressed(event, data):
         if event.y>=3*data.height//4 + 20:
             if len(data.messagingProfiles) > 1:
                 if len(data.myMessages) > 0:
-                    try: data.messagingProfiles[0][4] += data.myMessages
+                    try: data.messagingProfiles[0][5] += data.myMessages
                     except: data.messagingProfiles[0].append(data.myMessages)
                 lastPerson = data.messagingProfiles.pop(0)
                 data.messagingProfiles.append(lastPerson)

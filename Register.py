@@ -2,6 +2,8 @@
 from cv2 import *
 from tkinter import *
 from PIL import ImageTk,Image  
+from pickleFile import *
+import pickle
 # Basic Animation Framework from 112 website
 ####################################
 # customize these functions
@@ -10,7 +12,14 @@ def checkPassword(data):
     if data.password != data.confirmPassword:
         return "passwords must match!>:("
     else: return True
- 
+"""
+def processPicture(image):
+    pixels = ()
+    for i in range(len(image)):
+        pixels += image[i]
+        for j in range(len(image[0])):
+            pixels += image[]
+"""            
 #The code in this function is from stackoverflow (https://stackoverflow.com/questions/34588464/python-how-to-capture-image-from-webcam-on-click-using-opencv)
 def takePicture(data):
     cam = cv2.VideoCapture(0)
@@ -63,7 +72,7 @@ def registerMousePressed(event, data):
     elif event.x>=3*data.width//4 and event.x<=3*data.width//4+2*data.size:
         if event.y<=data.height//4+2*data.size and event.y>=data.height//4:
             if checkPassword(data) == True:
-                data.msg = data.myProfile
+                writePickle(data)
                 data.mode = "home"
     else:
         data.boxState = (False, "")
@@ -121,7 +130,7 @@ def registerKeyPressed(event, data):
             data.counter += 1
             
 def registerRedrawAll(canvas, data):
-    data.myProfile = [data.username,data.GPA,data.school,data.bio,data.image]
+    data.myProfile = (data.username,data.password,data.GPA,data.school,data.bio,data.image)
     canvas.create_rectangle(0,0,data.width,data.height,fill="green")
     #continue
     canvas.create_text(3*data.width//4+data.size,data.height//4+data.size,anchor="c",text="continue",font=("Comic Sans MS","16","bold"),fill="white",activefill="yellow")

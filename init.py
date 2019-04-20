@@ -1,6 +1,7 @@
 #Main function to run Seeking@CMU
 # Mode Demo
 import random
+import pickle
 from tkinter import *
 from Register import *
 from login import *

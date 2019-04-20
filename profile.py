@@ -32,11 +32,11 @@ def profileRedrawAll(canvas, data):
     #Picture
     canvas.create_rectangle(10,10,data.width//2,data.height//2,fill="white")
     #GPA
-    canvas.create_text(data.width//2+10,2.5*data.size,anchor="nw",font=("Comic Sans MS","16","bold"),text="GPA: "+data.otherProfiles[0][1])
+    canvas.create_text(data.width//2+10,2.5*data.size,anchor="nw",font=("Comic Sans MS","16","bold"),text="GPA: "+data.otherProfiles[0][2])
     #College
-    canvas.create_text(data.width//2+10,4*data.size,anchor="nw",font=("Comic Sans MS","16","bold"),text="School: "+data.otherProfiles[0][2])
+    canvas.create_text(data.width//2+10,4*data.size,anchor="nw",font=("Comic Sans MS","16","bold"),text="School: "+data.otherProfiles[0][3])
     #Bio
-    canvas.create_text(data.width//2+10,5.5*data.size,anchor="nw",font=("Comic Sans MS","16","bold"),text="Bio: "+data.otherProfiles[0][3])
+    canvas.create_text(data.width//2+10,5.5*data.size,anchor="nw",font=("Comic Sans MS","16","bold"),text="Bio: "+data.otherProfiles[0][4])
     #Go on a date
     canvas.create_rectangle(10,2*data.size+data.height//2,data.width//3-10,data.height-2*data.size,fill=data.color1,activefill="yellow")
     canvas.create_text(data.width//5-data.size//2,4*data.height//5-data.size,anchor="c",text="ask "+data.otherProfiles[0][0]+" on a date",font=("Comic Sans MS","12","bold"))
