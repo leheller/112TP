@@ -4,21 +4,11 @@ import random
 from tkinter import *
 from Register import *
 from login import *
-from home import *
-from profile import *
-from messaging import *
-from dates import *
+from profile_client import *
 from pickleFile import *
 from cv2 import *
 from PIL import ImageTk,Image 
 ###################
-#initialize known profiles
-# profilesFilename = "profiles.py"
-# with open(profilesFilename,"rb") as rfp:
-#     profiles = pickle.load(rfp)
-#     data.profiles = profiles
-# print(data.profiles)
-####################################
 # init
 ####################################
 def init(data):
@@ -60,31 +50,20 @@ def init(data):
 ####################################
 
 def mousePressed(event, data):
-    print(data.myProfile)
     if (data.mode == "login"):   loginMousePressed(event, data)
     elif (data.mode == "Register"): registerMousePressed(event, data)
-    elif (data.mode == "home"): homeMousePressed(event, data)
-    elif (data.mode == "profile"): profileMousePressed(event, data)
-    elif (data.mode == "messaging"): messagingMousePressed(event, data)
-    elif (data.mode == "dates"): datesMousePressed(event, data)
-    #elif (data.mode == "messaging"):  messagingMousePressed(event, data)
+
 
 def keyPressed(event, data):
     if (data.mode == "login"):   loginKeyPressed(event, data)
     elif (data.mode == "Register"): registerKeyPressed(event, data)
-    elif (data.mode == "home"): homeKeyPressed(event, data)
-    elif (data.mode == "profile"): profileKeyPressed(event, data)
-    elif (data.mode == "messaging"): messagingKeyPressed(event, data)
-    #elif (data.mode == "messaging"):    messagingKeyPressed(event, data)
+
 
 def redrawAll(canvas, data):
     if (data.mode == "login"): loginRedrawAll(canvas, data)
     elif (data.mode == "Register"):   registerRedrawAll(canvas, data)
-    elif (data.mode == "home"): homeRedrawAll(canvas, data)
-    elif (data.mode == "profile"): profileRedrawAll(canvas, data)
-    elif (data.mode == "messaging"): messagingRedrawAll(canvas, data)
-    elif (data.mode == "dates"): datesRedrawAll(canvas, data)
-    #elif (data.mode == "messaging"):       messagingRedrawAll(canvas, data)
+    elif (data.mode == "home"): homeRedrawAll
+
 
 
 ####################################

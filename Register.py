@@ -72,7 +72,10 @@ def registerMousePressed(event, data):
     elif event.x>=3*data.width//4 and event.x<=3*data.width//4+2*data.size:
         if event.y<=data.height//4+2*data.size and event.y>=data.height//4:
             if checkPassword(data) == True:
+                data.myProfile = (data.username,data.password,data.GPA,data.school,data.bio,data.image)
+                data.profiles.add(data.myProfile)
                 writePickle(data)
+                print(data.profiles)
                 data.mode = "home"
     else:
         data.boxState = (False, "")
@@ -130,7 +133,6 @@ def registerKeyPressed(event, data):
             data.counter += 1
             
 def registerRedrawAll(canvas, data):
-    data.myProfile = (data.username,data.password,data.GPA,data.school,data.bio,data.image)
     canvas.create_rectangle(0,0,data.width,data.height,fill="green")
     #continue
     canvas.create_text(3*data.width//4+data.size,data.height//4+data.size,anchor="c",text="continue",font=("Comic Sans MS","16","bold"),fill="white",activefill="yellow")
@@ -178,5 +180,8 @@ def registerRedrawAll(canvas, data):
         canvas.create_text(data.width-2*data.size,data.size,anchor="w",text="passwords\nmust\nmatch!",font=("Comic Sans MS","12","bold"))
     #image box
     try: 
+        print(data.image)
         canvas.create_image(data.width//2, data.height//2, anchor="nw", image=data.image)
     except: canvas.create_rectangle(data.width//2,data.height//2,data.width-data.size,data.height-data.size,fill="black")
+    
+    

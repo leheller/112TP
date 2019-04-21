@@ -19,4 +19,4 @@ def writePickle(data):
         profiles = pickle.load(rfp)
         
     data.profiles = profiles
-    print(profiles)
+    return profiles

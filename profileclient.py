@@ -6,6 +6,7 @@ import random
 def profileMousePressed(event, data):
     if (event.x>=10) and (event.y>=2*data.size+data.height//2) and (event.x<=data.width//3-10) and (event.y<=data.height-2*data.size):
         data.color1 = "yellow"
+        data.msg = "match\n"
         day = random.choice(["Monday","Tuesday","Wednesday","Thursday","Friday","Saturday","Sunday"])
         time = random.choice(["  8pm","  4:30pm","  Midnight","  6:30pm","  2pm","  9:30am","  11am","  Noon"])
         place = random.choice(["  iNoodle","  the Fence","  Walking to the Sky","  Sorrels","  ABP","  CFA Lawn","  the Exchange","  Number Garden","  Doherty 2315","  Donner Dungeon"])
@@ -15,7 +16,7 @@ def profileMousePressed(event, data):
             data.mode = "home"
     elif event.x>=10+data.width//3 and event.x<=2*data.width//3-10:
         if event.y>=2*data.size+data.height//2 and event.y<=data.height-2*data.size:
-            data.messagingProfiles += [data.otherProfiles[0][0]]
+            data.messagingProfiles += [data.otherProfiles[0]]
     elif event.x>=2*data.width//3+10 and event.x<=10+2*data.width//3+3.5*data.size:
         if event.y>=2*data.height//3 and event.y<=5*data.height//6:
             if len(data.otherProfiles) > 1:
