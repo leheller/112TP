@@ -27,7 +27,7 @@ def handleClient(client, serverChannel, cID, clientele):
       while (len(command) > 1):
         readyMsg = command[0]
         msg = "\n".join(command[1:])
-        serverChannel.put(str(cID) + " " + readyMsg)
+        serverChannel.put(str(cID) + "&" + readyMsg)
         command = msg.split("\n")
     except:
       # we failed
@@ -37,14 +37,14 @@ def serverThread(clientele, serverChannel):
   while True:
     msg = serverChannel.get(True, None)
     print("msg recv: ", msg)
-    msgList = msg.split(" ")
+    msgList = msg.split("&")
     senderID = msgList[0]
     instruction = msgList[1]
-    details = " ".join(msgList[2:])
+    details = "&".join(msgList[2:])
     if (details != ""):
       for cID in clientele:
         if cID != senderID:
-          sendMsg = instruction + " " + senderID + " " + details + "\n"
+          sendMsg = instruction + "&" + senderID + "&" + details + "\n"
           clientele[cID].send(sendMsg.encode())
           print("> sent to %s:" % cID, sendMsg[:-1])
     print()
@@ -56,7 +56,7 @@ playerNum = 0
 serverChannel = Queue(100)
 threading.Thread(target = serverThread, args = (clientele, serverChannel)).start()
 
-names = [["John","3.49","SCS","I like dogs!"],["Bob","4.0","CIT","hi"],["David","2.7","CFA","Just hangin"]]
+names = ["John","Bob","David","Watson","Crick","Scout"]
 
 while True:
   client, address = server.accept()

@@ -75,7 +75,9 @@ def registerMousePressed(event, data):
                 data.myProfile = (data.username,data.password,data.GPA,data.school,data.bio,data.image)
                 data.profiles.add(data.myProfile)
                 writePickle(data)
-                print(data.profiles)
+                setToString(data,data.myProfile)
+                writePickle(data)
+                print("lol",data.profiles)
                 data.mode = "home"
     else:
         data.boxState = (False, "")
@@ -180,7 +182,6 @@ def registerRedrawAll(canvas, data):
         canvas.create_text(data.width-2*data.size,data.size,anchor="w",text="passwords\nmust\nmatch!",font=("Comic Sans MS","12","bold"))
     #image box
     try: 
-        print(data.image)
         canvas.create_image(data.width//2, data.height//2, anchor="nw", image=data.image)
     except: canvas.create_rectangle(data.width//2,data.height//2,data.width-data.size,data.height-data.size,fill="black")
     

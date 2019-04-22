@@ -2,14 +2,23 @@
 from tkinter import *
 import random
 
+def findMatches(data):
+    people = set()
+    for match in data.matches:
+        if match[0] == data.username:
+            people.add(match[1])
+    for match in data.matches:
+        if match[1] == data.username and match[0] in people:
+            data.myMatches = data.myMatches + [match]
 
 def dates(canvas,data):
+    findMatches(data)
     i = 0
-    for matches in data.matchedProfiles:
-        day = data.matchedProfiles[i][1]
-        time = data.matchedProfiles[i][2]
-        place = data.matchedProfiles[i][3]
-        canvas.create_text(2*data.size,data.size+data.height//10*(i+1),font=("Comic Sans MS","18","bold"),text=data.matchedProfiles[i][0],anchor="n")
+    for matches in data.myMatches:
+        day = data.myMatches[i][2]
+        time = data.myMatches[i][3]
+        place = data.myMatches[i][4]
+        canvas.create_text(2*data.size,data.size+data.height//10*(i+1),font=("Comic Sans MS","18","bold"),text=data.myMatches[i][0],anchor="n")
         canvas.create_text(data.width//4,data.size+data.height//10*(i+1),font=("Comic Sans MS","16","bold"),text="  --->  "+day+time+place,anchor="nw")
         i += 1
 

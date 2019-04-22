@@ -50,7 +50,6 @@ def init(data):
     data.size = 30
     data.sizeX = 90
     data.sizeY = 30
-    data.boxState = (False,"")
     data.username = ""
     data.password = ""
     data.confirmPassword = ""
@@ -65,27 +64,19 @@ def init(data):
     data.myMessages = []
     data.text = ""
     data.messagingProfiles = []
-    data.otherProfs = (("John","3.49","CIT","ncjoewbv"),("Bob","2","SCS","hncubiowvhodb2"))
-    data.otherProfiles = []
-    data.matchedProfiles = []
-    data.myProfile = ["","","",""]
+    data.profiles = ()
+    data.matches = ()
+    data.match = ()
+    data.myProfile = ()
     data.image = ""
+    data.myMatches = []
+    data.otherProfiles = []
 
 def mousePressed(event, data):
     initMousePressed(event,data)
 
 def keyPressed(event, data):
     initKeyPressed(event,data)
-    msg = ""
-    directions = ["Up", "Down", "Left", "Right"]
-    if event.keysym in directions:
-        # update message to send
-        msg = "playerMoved "+data.profiles+"\n" 
-
-    # send the message to other players!
-    if (msg != ""):
-        print ("sending: ", msg,)
-        data.server.send(msg.encode())
 
 def timerFired(data):
     # timerFired receives instructions and executes them
@@ -94,7 +85,34 @@ def timerFired(data):
         print(msg)
         try:
             print("received: ", msg, "\n")
-            data.profiles = msg
+            msg = msg.split("&")
+            command = msg[0]
+            
+            if (command == "NewProfile"):
+                myPID = msg[1]
+                name = msg[2]
+                password = msg[3]
+                GPA = msg[4]
+                college = msg[5]
+                bio = msg[6]
+                profile = (name,password,GPA,college,bio)
+                data.profiles.add(profile)
+                writePickle(data)
+                print(data.profiles)
+                print("blah")
+                print(data.otherProfiles)
+                
+            elif (command == "Match"):
+                myPID = msg[1]
+                name1 = msg[2]
+                name2 = msg[3]
+                day = msg[4]
+                time = msg[5]
+                place = msg[6]
+                match = (name1,name2,day,time,place)
+                data.matches.add(match)
+                writePickle2(data)
+                
         except:
             print("failed")
         serverMsg.task_done()

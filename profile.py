@@ -1,5 +1,5 @@
 #Profile page for all of the potential matches
-
+from pickleFile import *
 from tkinter import *
 import random
 
@@ -9,7 +9,10 @@ def profileMousePressed(event, data):
         day = random.choice(["Monday","Tuesday","Wednesday","Thursday","Friday","Saturday","Sunday"])
         time = random.choice(["  8pm","  4:30pm","  Midnight","  6:30pm","  2pm","  9:30am","  11am","  Noon"])
         place = random.choice(["  iNoodle","  the Fence","  Walking to the Sky","  Sorrels","  ABP","  CFA Lawn","  the Exchange","  Number Garden","  Doherty 2315","  Donner Dungeon"])
-        data.matchedProfiles.append([data.otherProfiles[0][0],day,time,place])
+        data.match = (data.myProfile[0],data.otherProfiles[0][0],day,time,place)
+        writePickle2(data)
+        setToString2(data,data.match)
+        writePickle2(data)
     elif event.x>=10 and event.x<=data.size+10:
         if event.y>=10 and event.y<=data.size+10:
             data.mode = "home"
@@ -19,7 +22,8 @@ def profileMousePressed(event, data):
     elif event.x>=2*data.width//3+10 and event.x<=10+2*data.width//3+3.5*data.size:
         if event.y>=2*data.height//3 and event.y<=5*data.height//6:
             if len(data.otherProfiles) > 1:
-                data.otherProfiles.pop(0)
+                pop = data.otherProfiles.pop(0)
+                data.otherProfiles.append(pop)
                 data.color1 = "white"
         
 def profileKeyPressed(event, data):

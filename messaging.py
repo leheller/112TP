@@ -16,7 +16,6 @@ def messagingTexts(canvas,data):
         y2 = y1 + 1.5*data.size
         x3 = 5*data.width//6 - 10
         y3 = data.height-4.2*data.size - i*data.size
-        print("initial")
         canvas.create_rectangle(x1,y1,x2,y2,fill="white")
         canvas.create_text(x3,y3,font=("Comic Sans MS","12","bold"),anchor="center",text=message)
         i += 2
