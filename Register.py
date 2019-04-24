@@ -45,7 +45,6 @@ def takePicture(data):
     cv2.destroyAllWindows()
     #Next few lines inspired from online (https://stackoverflow.com/questions/52375035/cropping-an-image-in-tkinter/52375463#52375463)
     im = Image.open(img_name)
-    #cropped = im.crop([1280, 1280, 1640, 1640])
     cropped = im.crop([520, 270, 760, 510])
     data.image = ImageTk.PhotoImage(cropped) 
 
@@ -77,7 +76,6 @@ def registerMousePressed(event, data):
                 writePickle(data)
                 setToString(data,data.myProfile)
                 writePickle(data)
-                print("lol",data.profiles)
                 data.mode = "home"
     else:
         data.boxState = (False, "")
@@ -154,7 +152,7 @@ def registerRedrawAll(canvas, data):
     #create profile text
     canvas.create_text(data.width//2,data.size,anchor="c",font=("Comic Sans MS","28","bold"),text="Create Profile",fill="white")
     #username
-    canvas.create_text(data.width//8,data.sizeX,anchor="c",font=("Comic Sans MS","18","bold"),text="username:",fill="white")
+    canvas.create_text(data.width//8,data.sizeX,anchor="c",font=("Comic Sans MS","18","bold"),text="andrew ID:",fill="white")
     #password 
     canvas.create_text(data.width//8,data.sizeX+1.5*data.sizeY,anchor="c",font=("Comic Sans MS","18","bold"),text="password:",fill="white")
     canvas.create_text(data.width//8,data.sizeX+3*data.sizeY,anchor="c",font=("Comic Sans MS","18","bold"),text="confirm\npassword:",fill="white")

@@ -20,7 +20,6 @@ def writePickle(data):
 
     data.otherProfiles = list(profiles)
     data.profiles = profiles
-    print("hi",data.profiles)
     return profiles
     
 def writePickle2(data):
@@ -40,10 +39,29 @@ def writePickle2(data):
         matches = pickle.load(rfp)
     
     data.matches = matches
-    print("hello")
-    print(matches)
     return matches
     
+def writePickle3(data):
+    profilesFilename = "messages.py"
+    messages = set()
+    if os.path.exists(profilesFilename):
+        with open(profilesFilename,"rb") as rfp:
+            messages = pickle.load(rfp)
+    
+    newMessage = data.newMessage
+    #newMessage = ("Lauren","Bob","HI!")
+    if len(newMessage) > 1:
+        messages.add(newMessage)
+    
+    with open(profilesFilename,"wb") as wfp:
+        pickle.dump(messages,wfp)
+    
+    with open(profilesFilename,"rb") as rfp:
+        messages = pickle.load(rfp)
+    
+    data.messages = messages
+    return messages
+        
 def setToString(data,tup):
     msg = "NewProfile&"
     for attribute in tup:
@@ -60,5 +78,10 @@ def setToString2(data,tup):
     print ("sending: ", msg,)
     data.server.send(msg.encode())
     
-#two pickle files (profiles, messages)
-#Turn set into string
+def setToString3(data,tup):
+    msg = "NewMessage&"
+    for attribute in tup:
+        msg += attribute + "&"
+    msg += "\n"
+    print ("sending: ", msg,)
+    data.server.send(msg.encode())

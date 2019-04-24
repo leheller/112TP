@@ -6,6 +6,7 @@
 from init import *
 import socket
 import threading
+from messaging import *
 from queue import Queue
 
 HOST = "" # put your IP address here if playing on multiple computers
@@ -60,16 +61,17 @@ def init(data):
     data.GPA = ""
     data.school = ""
     data.bio = ""
-    data.messages = []
-    data.myMessages = []
+    data.messages = set()
+    data.newMessage = ()
+    data.mySent = []
+    data.myReceived = []
     data.text = ""
-    data.messagingProfiles = []
     data.profiles = ()
-    data.matches = ()
+    data.matches = set()
     data.match = ()
     data.myProfile = ()
     data.image = ""
-    data.myMatches = []
+    data.myMatches = set()
     data.otherProfiles = []
 
 def mousePressed(event, data):
@@ -98,9 +100,6 @@ def timerFired(data):
                 profile = (name,password,GPA,college,bio)
                 data.profiles.add(profile)
                 writePickle(data)
-                print(data.profiles)
-                print("blah")
-                print(data.otherProfiles)
                 
             elif (command == "Match"):
                 myPID = msg[1]
@@ -112,6 +111,18 @@ def timerFired(data):
                 match = (name1,name2,day,time,place)
                 data.matches.add(match)
                 writePickle2(data)
+                
+            elif (command == "NewMessage"):
+                myPID = msg[1]
+                name1 = msg[2]
+                name2 = msg[3]
+                text = msg[4]
+                message = (name1,name2,text)
+                print("message:", message)
+                addMessages(message,data.messages)
+                print("bcdhjwibv", data.messages)
+                writePickle3(data)
+                messageReader(data)
                 
         except:
             print("failed")

@@ -31,7 +31,6 @@ def knownPerson(data):
     with open(profilesFilename,"rb") as rfp:
         profiles = pickle.load(rfp)
         data.profiles = profiles
-    print("ppl",data.profiles)
     data.otherProfiles = list(data.profiles)
     for ppl in data.otherProfiles:
         if ppl[0] == data.username1 and ppl[1] == data.password1:
@@ -41,7 +40,6 @@ def knownPerson(data):
             data.school = ppl[3]
             data.bio = ppl[4]
             data.otherProfiles.remove(data.myProfile)
-            print("login",data.otherProfiles)
             return True
     return False
         

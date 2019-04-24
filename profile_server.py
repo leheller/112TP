@@ -38,12 +38,15 @@ def serverThread(clientele, serverChannel):
     msg = serverChannel.get(True, None)
     print("msg recv: ", msg)
     msgList = msg.split("&")
-    senderID = msgList[0]
-    instruction = msgList[1]
-    details = "&".join(msgList[2:])
+    senderID = msgList[0] #john
+    instruction = msgList[1] #NewMessage
+    details = "&".join(msgList[2:]) #Rest of message
     if (details != ""):
+      print("hehehehe")
       for cID in clientele:
+        print(cID,clientele)
         if cID != senderID:
+          print("blah")
           sendMsg = instruction + "&" + senderID + "&" + details + "\n"
           clientele[cID].send(sendMsg.encode())
           print("> sent to %s:" % cID, sendMsg[:-1])

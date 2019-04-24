@@ -10,6 +10,7 @@ def profileMousePressed(event, data):
         time = random.choice(["  8pm","  4:30pm","  Midnight","  6:30pm","  2pm","  9:30am","  11am","  Noon"])
         place = random.choice(["  iNoodle","  the Fence","  Walking to the Sky","  Sorrels","  ABP","  CFA Lawn","  the Exchange","  Number Garden","  Doherty 2315","  Donner Dungeon"])
         data.match = (data.myProfile[0],data.otherProfiles[0][0],day,time,place)
+        data.matches.add(data.match)
         writePickle2(data)
         setToString2(data,data.match)
         writePickle2(data)
@@ -18,7 +19,10 @@ def profileMousePressed(event, data):
             data.mode = "home"
     elif event.x>=10+data.width//3 and event.x<=2*data.width//3-10:
         if event.y>=2*data.size+data.height//2 and event.y<=data.height-2*data.size:
-            data.messagingProfiles += [data.otherProfiles[0][0]]
+            data.newMessage = (data.username,data.otherProfiles[0][0],"Hi!")
+            writePickle3(data)
+            setToString3(data,data.newMessage)
+            writePickle3(data)
     elif event.x>=2*data.width//3+10 and event.x<=10+2*data.width//3+3.5*data.size:
         if event.y>=2*data.height//3 and event.y<=5*data.height//6:
             if len(data.otherProfiles) > 1:
