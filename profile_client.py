@@ -2,6 +2,7 @@
 # Sockets Client Demo
 # by Rohan Varma
 # adapted by Kyle Chin
+#from 112 website
 #############################
 from init import *
 import socket
@@ -36,6 +37,7 @@ from message import *
 import random
 ####################################
 # customize these functions
+#from 112 website
 ####################################
 
 def init(data):
@@ -86,7 +88,7 @@ def timerFired(data):
         msg = serverMsg.get(False)
         print(msg)
         try:
-            print("received: ", msg, "\n")
+            print("received: ", msg)
             msg = msg.split("&")
             command = msg[0]
             
@@ -119,10 +121,8 @@ def timerFired(data):
                 text = msg[4]
                 message = (name1,name2,text)
                 print("message:", message)
-                addMessages(message,data.messages)
-                print("bcdhjwibv", data.messages)
-                writePickle3(data)
-                messageReader(data)
+                data.newMessage = message
+                addMessages(data)
                 
         except:
             print("failed")

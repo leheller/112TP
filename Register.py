@@ -12,14 +12,7 @@ def checkPassword(data):
     if data.password != data.confirmPassword:
         return "passwords must match!>:("
     else: return True
-"""
-def processPicture(image):
-    pixels = ()
-    for i in range(len(image)):
-        pixels += image[i]
-        for j in range(len(image[0])):
-            pixels += image[]
-"""            
+
 #The code in this function is from stackoverflow (https://stackoverflow.com/questions/34588464/python-how-to-capture-image-from-webcam-on-click-using-opencv)
 def takePicture(data):
     cam = cv2.VideoCapture(0)
@@ -44,7 +37,7 @@ def takePicture(data):
     cam.release()
     cv2.destroyAllWindows()
     #Next few lines inspired from online (https://stackoverflow.com/questions/52375035/cropping-an-image-in-tkinter/52375463#52375463)
-    im = Image.open(img_name)
+    im = Image.open(img_name).convert('LA')
     cropped = im.crop([520, 270, 760, 510])
     data.image = ImageTk.PhotoImage(cropped) 
 

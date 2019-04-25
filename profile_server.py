@@ -2,6 +2,7 @@
 # Sockets Server Demo
 # by Rohan Varma
 # adapted by Kyle Chin
+#From 112 website
 #############################
 
 import socket
@@ -42,15 +43,11 @@ def serverThread(clientele, serverChannel):
     instruction = msgList[1] #NewMessage
     details = "&".join(msgList[2:]) #Rest of message
     if (details != ""):
-      print("hehehehe")
       for cID in clientele:
-        print(cID,clientele)
         if cID != senderID:
-          print("blah")
           sendMsg = instruction + "&" + senderID + "&" + details + "\n"
           clientele[cID].send(sendMsg.encode())
           print("> sent to %s:" % cID, sendMsg[:-1])
-    print()
     serverChannel.task_done()
 
 clientele = dict()

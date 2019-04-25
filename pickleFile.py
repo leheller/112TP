@@ -1,6 +1,9 @@
 import pickle
 import os
 
+messages = pickle.load( open( "messages.py", "rb" ) )
+print(messages)
+
 #Adapted from https://stackoverflow.com/questions/28077573/python-appending-to-a-pickled-list
 def writePickle(data):
     profilesFilename = "profiles.py"
@@ -10,6 +13,7 @@ def writePickle(data):
             profiles = pickle.load(rfp)
         
     newProfile = data.myProfile
+    #newProfile = ("Lauren","webkin","4.0","CIT","I like to ski!")
     profiles.add(newProfile)
     
     with open(profilesFilename,"wb") as wfp:
@@ -17,8 +21,12 @@ def writePickle(data):
     
     with open(profilesFilename,"rb") as rfp:
         profiles = pickle.load(rfp)
-
-    data.otherProfiles = list(profiles)
+    
+    otherProfiles = []
+    for profile in profiles:
+        if profile[0] != data.username:
+            otherProfiles += [profile]
+    data.otherProfiles = list(otherProfiles)
     data.profiles = profiles
     return profiles
     
@@ -30,6 +38,7 @@ def writePickle2(data):
             matches = pickle.load(rfp)
             
     newMatch = data.match
+    #newMatch = ("Lauren","Bob")
     matches.add(newMatch)
     
     with open(profilesFilename,"wb") as wfp:
@@ -37,9 +46,9 @@ def writePickle2(data):
     
     with open(profilesFilename,"rb") as rfp:
         matches = pickle.load(rfp)
-    
-    data.matches = matches
-    return matches
+        
+        data.matches = matches
+        return matches
     
 def writePickle3(data):
     profilesFilename = "messages.py"
@@ -48,10 +57,20 @@ def writePickle3(data):
         with open(profilesFilename,"rb") as rfp:
             messages = pickle.load(rfp)
     
-    newMessage = data.newMessage
-    #newMessage = ("Lauren","Bob","HI!")
-    if len(newMessage) > 1:
-        messages.add(newMessage)
+    for elem in data.messages:
+        check = False
+        print(elem)
+        if len(elem) > 2:
+            for elem2 in messages:
+                print(elem2)
+                if elem[0] == elem2[0] and elem[1] == elem2[1]:
+                    messages.remove(elem2)
+                    messages.add(elem)
+                    check = True
+            if check == False:
+                messages.add(elem)
+    print(messages)
+    
     
     with open(profilesFilename,"wb") as wfp:
         pickle.dump(messages,wfp)

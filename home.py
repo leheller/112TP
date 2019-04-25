@@ -4,7 +4,8 @@
 from cv2 import *
 from messaging import *
 from tkinter import *
-from PIL import ImageTk,Image  
+from PIL import ImageTk,Image 
+from pickleFile import * 
 ####################################
 #From 112 website
 # customize these functions
@@ -17,8 +18,6 @@ def homeMousePressed(event, data):
     elif event.x>=10+data.width//3 and event.x<=2*data.width//3-10:
         if event.y>=2*data.size+data.height//2 and event.y<=data.height-2*data.size:
             writePickle3(data)
-            messageReader(data)
-            print("MESSAGES:", data.messages, data.mySent)
             data.mode = "messaging"
     elif event.x>=10 and event.x<=2*data.width//3-10:
         if event.y>=2*data.size+data.height//2 and data.height-2*data.size:

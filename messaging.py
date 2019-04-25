@@ -20,27 +20,28 @@ def messageReader(data):
     data.myReceived = myReceived
     
 def addMessages(data):
-    print("NEW MESSAGE:",data.newMessage)
-    lst = data.newMessage
     messages = data.messages
-    person1 = lst[0]
-    person2 = lst[1]
-    text = lst[2]
-    print("MESSAGES:",messages)
-    for message in messages:
-        print("123", message)
-        if message[0] == person1 and message[1] == person2:
-            print("made it!!!!!$$$$$")
-            messages.remove(message)
-            message2 = [message[0],message[1]]
-            for texts in message[2:]:
-                message2 += [texts]
-            message2 += [text]
-            message = tuple(message2)
+    person1 = data.newMessage[0]
+    person2 = data.newMessage[1]
+    text = data.newMessage[2]
+    check = False
+    for mes in messages:
+        if mes[0] == person1 and mes[1] == person2:
+            messages.remove(mes)
+            mes2 = [person1,person2,text]
+            for texts in mes[2:]:
+                mes2 += [texts]
+            message = tuple(mes2)
             messages.add(message)
+            check = True
             break
-    print("MESSAGES2:",messages)
+    if check == False:
+        messages.add(data.newMessage)    
+    print("\n")
+    print("UPDATED MESSAGES:",messages)
     data.messages = messages
+    writePickle3(data)
+    messageReader(data)
     
 def messageReaderReverse(data, oneMessage):
     otherName = oneMessage[1]
@@ -61,9 +62,10 @@ def messagingTexts(canvas,data):
         canvas.create_rectangle(x1,y1,x2,y2,fill="white")
         canvas.create_text(x3,y3,font=("Comic Sans MS","12","bold"),anchor="center",text=text)
         i += 2
+    i = 0
     for ppl in data.myReceived:
         if ppl[0] == data.mySent[0][1]:
-            for text in ppl[0][2:]:
+            for text in ppl[2:]:
                 x1 = 10
                 x2 = data.width//3 - 10
                 y1 = data.height-5*data.size - i*data.size
@@ -88,9 +90,7 @@ def messagingKeyPressed(event, data):
     if event.keysym == "Return":
         data.newMessage = (data.username,data.mySent[0][1],data.text)
         addMessages(data)
-        writePickle3(data)
         setToString3(data,data.newMessage)
-        writePickle3(data)
         data.text = ""
     elif event.keysym == "BackSpace":
         data.text = data.text[:-1]
@@ -102,10 +102,10 @@ def messagingKeyPressed(event, data):
 def messagingRedrawAll(canvas, data):
     messageReader(data)
     canvas.create_rectangle(0,0,data.width,data.height,fill="green")
-    name = data.mySent[0][1]
-    if len(data.messages) == 0:
+    if len(data.mySent) == 0:
         canvas.create_text(data.width//2,data.height//2,anchor="center",text="NO MESSAGES:(",font=("Comic Sans MS","30","bold"))
     else:
+        name = data.mySent[0][1]
         #text box
         canvas.create_rectangle(10,data.height-10-2*data.size,data.width-10,data.height-10,fill="white")
         canvas.create_text(11,data.height-35,text=data.text,font=("Comic Sans MS","16","bold"),anchor="w")
