@@ -3,6 +3,20 @@ from pickleFile import *
 from messaging import *
 from tkinter import *
 import random
+from cv2 import *
+from PIL import ImageTk,Image 
+
+def recreate(s):
+    s = s.split('&')
+    for i in range(len(s)):
+            if s[i] == "":
+                s.pop(i)
+            else:
+                t = (int(s[i]),255) 
+                s[i] = t
+    im2 = Image.new('LA',(240,240))
+    im2.putdata(s)
+    data.otherImage = ImageTk.PhotoImage(im2) 
 
 def profileMousePressed(event, data):
     if (event.x>=10) and (event.y>=2*data.size+data.height//2) and (event.x<=data.width//3-10) and (event.y<=data.height-2*data.size):
@@ -40,7 +54,18 @@ def profileRedrawAll(canvas, data):
         #Name
         canvas.create_text(data.width//2+10,data.size,anchor="nw",font=("Comic Sans MS","24","bold"),text="Andrew ID: "+data.otherProfiles[0][0])
         #Picture
-        canvas.create_rectangle(10,10,data.width//2,data.height//2,fill="white")
+        if len(data.otherProfiles[0][5]) > 1:
+            recreate(data.otherProfiles[0][5])
+            print(data.otherImage)
+            canvas.create_image(10, 10, anchor="nw", image=data.otherImage)
+        else:
+            canvas.create_rectangle(10,10,data.width//2,data.height//2,fill="black")
+            canvas.create_oval(120-40,80-40,160,120,width=3,outline="white")
+            canvas.create_line(120,120,120,250,width=3,fill="white")
+            canvas.create_line(120,140,200,200,width=3,fill="white")
+            canvas.create_line(120,140,40,200,width=3,fill="white")
+            canvas.create_text(120,70,anchor="center",text="O   O",font=("32"),fill="white")
+            canvas.create_line(100,90,120,110,140,90,smooth=1,width=3,fill="white")
         #GPA
         canvas.create_text(data.width//2+10,2.5*data.size,anchor="nw",font=("Comic Sans MS","16","bold"),text="GPA: "+data.otherProfiles[0][2])
         #College

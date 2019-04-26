@@ -13,10 +13,20 @@ def checkPassword(data):
         return "passwords must match!>:("
     else: return True
 
+def processPicture(image):
+    img = Image.open(image)
+    cropped = img.crop([520, 270, 760, 510]).convert('LA')
+    data = list(cropped.getdata(0))
+    s = ""
+    for px in data:
+        s += str(px) + "&"
+    print("DONE")
+    return s
+
 #The code in this function is from stackoverflow (https://stackoverflow.com/questions/34588464/python-how-to-capture-image-from-webcam-on-click-using-opencv)
 def takePicture(data):
     cam = cv2.VideoCapture(0)
-    cv2.namedWindow("seeking@CMU")
+    cv2.namedWindow("Seeking@CMU")
     img_counter = 0
     while True:
         ret, frame = cam.read()
@@ -40,6 +50,8 @@ def takePicture(data):
     im = Image.open(img_name).convert('LA')
     cropped = im.crop([520, 270, 760, 510])
     data.image = ImageTk.PhotoImage(cropped) 
+    print(data.image)
+    data.imageName = img_name
 
 def registerMousePressed(event, data):
     if event.x>=data.width//2-data.sizeX and event.x<=data.width//2+data.sizeX and event.y<data.height//2:
@@ -64,7 +76,8 @@ def registerMousePressed(event, data):
     elif event.x>=3*data.width//4 and event.x<=3*data.width//4+2*data.size:
         if event.y<=data.height//4+2*data.size and event.y>=data.height//4:
             if checkPassword(data) == True:
-                data.myProfile = (data.username,data.password,data.GPA,data.school,data.bio,data.image)
+                image = processPicture(data.imageName)
+                data.myProfile = (data.username,data.password,data.GPA,data.school,data.bio,image)
                 data.profiles.add(data.myProfile)
                 writePickle(data)
                 setToString(data,data.myProfile)

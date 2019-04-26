@@ -1,8 +1,6 @@
 import pickle
 import os
 
-messages = pickle.load( open( "messages.py", "rb" ) )
-print(messages)
 
 #Adapted from https://stackoverflow.com/questions/28077573/python-appending-to-a-pickled-list
 def writePickle(data):
@@ -59,17 +57,14 @@ def writePickle3(data):
     
     for elem in data.messages:
         check = False
-        print(elem)
         if len(elem) > 2:
             for elem2 in messages:
-                print(elem2)
                 if elem[0] == elem2[0] and elem[1] == elem2[1]:
                     messages.remove(elem2)
                     messages.add(elem)
                     check = True
             if check == False:
                 messages.add(elem)
-    print(messages)
     
     
     with open(profilesFilename,"wb") as wfp:

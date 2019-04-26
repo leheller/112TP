@@ -75,6 +75,7 @@ def init(data):
     data.image = ""
     data.myMatches = set()
     data.otherProfiles = []
+    data.otherImage = ""
 
 def mousePressed(event, data):
     initMousePressed(event,data)
@@ -99,7 +100,8 @@ def timerFired(data):
                 GPA = msg[4]
                 college = msg[5]
                 bio = msg[6]
-                profile = (name,password,GPA,college,bio)
+                image = msg[7:]
+                profile = (name,password,GPA,college,bio,image)
                 data.profiles.add(profile)
                 writePickle(data)
                 
@@ -120,7 +122,6 @@ def timerFired(data):
                 name2 = msg[3]
                 text = msg[4]
                 message = (name1,name2,text)
-                print("message:", message)
                 data.newMessage = message
                 addMessages(data)
                 
