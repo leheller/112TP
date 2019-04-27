@@ -18,13 +18,6 @@ def createImage(list):
     im2.show()
     
 
-def sendImage(list):
-    s = ""
-    for px in list:
-        s += str(px) + "&"
-    return s
-        
-
 def recreate(s):
     s = s.split('&')
     for i in range(len(s)):
@@ -35,9 +28,8 @@ def recreate(s):
             s[i] = t
     im2 = Image.new('LA',(240,240))
     im2.putdata(s)
-    print(im2)
+    im2.show()
     return im2
 
     
-s = sendImage(list)
-recreate(s)
+recreate(list)

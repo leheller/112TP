@@ -23,8 +23,8 @@ def dates(canvas,data):
         day = matches[2]
         time = matches[3]
         place = matches[4]
-        canvas.create_text(2*data.size,data.size+data.height//10*(i+1),font=("Comic Sans MS","18","bold"),text=matches[0],anchor="n")
-        canvas.create_text(data.width//4,data.size+data.height//10*(i+1),font=("Comic Sans MS","16","bold"),text="  --->  "+day+time+place,anchor="nw")
+        canvas.create_text(2*data.size,data.size+data.height//10*(i+1),fill="white",font=("Comic Sans MS","18","bold"),text=matches[0],anchor="n")
+        canvas.create_text(data.width//4,data.size+data.height//10*(i+1),fill="white",font=("Comic Sans MS","16","bold"),text="  --->  "+day+time+place,anchor="nw")
         i += 1
 
 def datesMousePressed(event, data):
@@ -38,7 +38,8 @@ def datesRedrawAll(canvas, data):
         matches = pickle.load(rfp)
         data.matches = matches
     canvas.create_rectangle(0,0,data.width,data.height,fill="green")
-    canvas.create_text(data.width//2,10,text="Upcoming Dates",font=("Comic Sans MS","26","bold"),anchor="n")
+    canvas.create_image(0,0,anchor="nw",image=data.background)
+    canvas.create_text(data.width//2,10,text="Upcoming Dates",font=("Comic Sans MS","26","bold"),anchor="n",fill="white")
     dates(canvas,data)
     #home button
     canvas.create_rectangle(10,10,data.size+10,data.size+10,fill="white",activefill="yellow")

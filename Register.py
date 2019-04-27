@@ -11,6 +11,8 @@ import pickle
 def checkPassword(data):
     if data.password != data.confirmPassword:
         return "passwords must match!>:("
+    elif data.password == "" or data.username == "" or data.bio == "" or data.GPA == "" or data.school == "":
+        return "please fill in all fields"
     else: return True
 
 def processPicture(image):
@@ -26,6 +28,8 @@ def processPicture(image):
 #The code in this function is from stackoverflow (https://stackoverflow.com/questions/34588464/python-how-to-capture-image-from-webcam-on-click-using-opencv)
 def takePicture(data):
     cam = cv2.VideoCapture(0)
+    cam.set(3,250)
+    cam.set(4,250)
     cv2.namedWindow("Seeking@CMU")
     img_counter = 0
     while True:
@@ -129,17 +133,21 @@ def registerKeyPressed(event, data):
             data.bio = data.bio[:-1]
             data.counter -= 1
         elif data.counter > 20:
-            data.bio += "\n"
+            data.bio += "\n" + event.char
             data.counter = 0
             data.counter2 += 1
         elif data.counter2 > 7:
             pass
         else:
-            data.bio += event.char
-            data.counter += 1
-            
+            if event.char == "&":
+                pass
+            else:
+                data.bio += event.char
+                data.counter += 1
+                
 def registerRedrawAll(canvas, data):
     canvas.create_rectangle(0,0,data.width,data.height,fill="green")
+    canvas.create_image(0,0,anchor="nw",image=data.background)
     #continue
     canvas.create_text(3*data.width//4+data.size,data.height//4+data.size,anchor="c",text="continue",font=("Comic Sans MS","16","bold"),fill="white",activefill="yellow")
     #username box
@@ -180,13 +188,17 @@ def registerRedrawAll(canvas, data):
     #bio text
     canvas.create_text(data.sizeX//2+10,data.sizeX+8.5*data.sizeY,anchor="nw",text=data.bio,fill="black")
     #image text
+    canvas.create_rectangle(data.width//2,data.height//2,data.width-data.size,data.height-data.size,fill="black")
     canvas.create_text(3*data.width/4-data.size//2,3*data.height/4-data.size//2,anchor="c",text="upload image",fill="white",activefill="yellow")
-    if checkPassword(data) != True:
+    if checkPassword(data) == "passwords must match!>:(":
         canvas.create_rectangle(data.width-2*data.size,0,data.width,2*data.size,fill="red")
         canvas.create_text(data.width-2*data.size,data.size,anchor="w",text="passwords\nmust\nmatch!",font=("Comic Sans MS","12","bold"))
+    elif checkPassword(data) == "please fill in all fields":
+        canvas.create_rectangle(data.width-3*data.size,0,data.width,2*data.size,fill="red")
+        canvas.create_text(data.width-3*data.size,data.size,anchor="w",text="please fill in\nall fields",font=("Comic Sans MS","12","bold"))
     #image box
     try: 
         canvas.create_image(data.width//2, data.height//2, anchor="nw", image=data.image)
-    except: canvas.create_rectangle(data.width//2,data.height//2,data.width-data.size,data.height-data.size,fill="black")
+    except: pass
     
     

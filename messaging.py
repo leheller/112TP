@@ -102,6 +102,7 @@ def messagingKeyPressed(event, data):
 def messagingRedrawAll(canvas, data):
     messageReader(data)
     canvas.create_rectangle(0,0,data.width,data.height,fill="green")
+    canvas.create_image(0,0,anchor="nw",image=data.background)
     if len(data.mySent) == 0:
         canvas.create_text(data.width//2,data.height//2,anchor="center",text="NO MESSAGES:(",font=("Comic Sans MS","30","bold"))
     else:
@@ -112,7 +113,7 @@ def messagingRedrawAll(canvas, data):
         #messages
         messagingTexts(canvas,data)   
         #name
-        canvas.create_text(data.width//2,data.size,text=name,font=("Comic Sans MS","22","bold"),anchor="n")
+        canvas.create_text(data.width//2,data.size,text=name,font=("Comic Sans MS","22","bold"),anchor="n",fill="white")
         #Next
         canvas.create_polygon(2*data.width//3+10,data.height-data.size,10+2*data.width//3,data.height-2.5*data.size,10+2*data.width//3+2*data.size,data.height-2.5*data.size,10+2*data.width//3+2*data.size,data.height-3.5*data.size,10+2*data.width//3+3.5*data.size,data.height-1.75*data.size,10+2*data.width//3+2*data.size,data.height,10+2*data.width//3+2*data.size,data.height-data.size,fill="red",activefill="yellow")
         canvas.create_text(2.3*data.width//3+10,data.height-1.75*data.size,anchor="c",text="see more messages",font=("Comic Sans MS","10","bold"))

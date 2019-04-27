@@ -27,9 +27,10 @@ def homeKeyPressed(event, data):
     pass
 
 def homeRedrawAll(canvas, data):
-    canvas.create_rectangle(0,0,data.width,data.height,fill="green")
+    canvas.create_image(0,0,anchor="nw",image=data.background)
+    canvas.create_rectangle(data.width//2+5,10,data.width-10,data.height//2,fill="white")
     #Name
-    canvas.create_text(data.width//2+10,data.size,anchor="nw",font=("Comic Sans MS","24","bold"),text="Name: "+data.username)
+    canvas.create_text(data.width//2+10,data.size,anchor="nw",font=("Comic Sans MS","24","bold"),text="AndrewID: "+data.username)
     #Picture
     canvas.create_image(10, 10, anchor="nw", image=data.image)
     #GPA

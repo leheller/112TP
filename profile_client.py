@@ -9,6 +9,9 @@ import socket
 import threading
 from messaging import *
 from queue import Queue
+from cv2 import *
+from tkinter import *
+from PIL import ImageTk,Image  
 
 HOST = "" # put your IP address here if playing on multiple computers
 PORT = 50003
@@ -75,9 +78,11 @@ def init(data):
     data.image = ""
     data.myMatches = set()
     data.otherProfiles = []
-    data.otherImage = ""
+    data.profileImage = ""
+    data.background = ""
 
 def mousePressed(event, data):
+    data.background = PhotoImage(file = "no-image-event.gif")
     initMousePressed(event,data)
 
 def keyPressed(event, data):
@@ -87,7 +92,6 @@ def timerFired(data):
     # timerFired receives instructions and executes them
     while (serverMsg.qsize() > 0):
         msg = serverMsg.get(False)
-        print(msg)
         try:
             print("received: ", msg)
             msg = msg.split("&")
@@ -100,7 +104,7 @@ def timerFired(data):
                 GPA = msg[4]
                 college = msg[5]
                 bio = msg[6]
-                image = msg[7:]
+                image = tuple(msg[7:])
                 profile = (name,password,GPA,college,bio,image)
                 data.profiles.add(profile)
                 writePickle(data)
@@ -124,7 +128,7 @@ def timerFired(data):
                 message = (name1,name2,text)
                 data.newMessage = message
                 addMessages(data)
-                
+            
         except:
             print("failed")
         serverMsg.task_done()

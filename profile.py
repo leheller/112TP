@@ -6,7 +6,7 @@ import random
 from cv2 import *
 from PIL import ImageTk,Image 
 
-def recreate(s):
+def recreate(data, s):
     s = s.split('&')
     for i in range(len(s)):
             if s[i] == "":
@@ -16,7 +16,7 @@ def recreate(s):
                 s[i] = t
     im2 = Image.new('LA',(240,240))
     im2.putdata(s)
-    data.otherImage = ImageTk.PhotoImage(im2) 
+    data.profileImage = ImageTk.PhotoImage(im2)
 
 def profileMousePressed(event, data):
     if (event.x>=10) and (event.y>=2*data.size+data.height//2) and (event.x<=data.width//3-10) and (event.y<=data.height-2*data.size):
@@ -43,6 +43,7 @@ def profileMousePressed(event, data):
             if len(data.otherProfiles) > 1:
                 pop = data.otherProfiles.pop(0)
                 data.otherProfiles.append(pop)
+                recreate(data, data.otherProfiles[0][5])
                 data.color1 = "white"
         
 def profileKeyPressed(event, data):
@@ -50,15 +51,15 @@ def profileKeyPressed(event, data):
 
 def profileRedrawAll(canvas, data):
     canvas.create_rectangle(0,0,data.width,data.height,fill="green")
+    canvas.create_image(0,0,anchor="nw",image=data.background)
     if len(data.otherProfiles) > 0:
         #Name
-        canvas.create_text(data.width//2+10,data.size,anchor="nw",font=("Comic Sans MS","24","bold"),text="Andrew ID: "+data.otherProfiles[0][0])
+        canvas.create_rectangle(data.width//2+5,10,data.width-10,data.height//2,fill="white")
+        canvas.create_text(data.width//2+10,data.size,anchor="nw",font=("Comic Sans MS","24","bold"),text="AndrewID: "+data.otherProfiles[0][0])
         #Picture
-        if len(data.otherProfiles[0][5]) > 1:
-            recreate(data.otherProfiles[0][5])
-            print(data.otherImage)
-            canvas.create_image(10, 10, anchor="nw", image=data.otherImage)
-        else:
+        try:
+            canvas.create_image(10, 10, anchor="nw", image=data.profileImage)
+        except: 
             canvas.create_rectangle(10,10,data.width//2,data.height//2,fill="black")
             canvas.create_oval(120-40,80-40,160,120,width=3,outline="white")
             canvas.create_line(120,120,120,250,width=3,fill="white")

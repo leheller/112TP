@@ -47,9 +47,19 @@ def loginKeyPressed(event, data):
     if event.keysym == "Return":
         data.boxState == "login"
     elif data.boxState[0] == True and data.boxState[1] == "username":
-        data.username1 += event.char
+        if event.keysym == "BackSpace":
+            data.username1 = data.username1[:-1]
+        elif len(data.username1) > 18:
+            pass
+        else:
+            data.username1 += event.char
     elif data.boxState[0] == True and data.boxState[1] == "password":
-        data.password1 += event.char
+        if event.keysym == "BackSpace":
+            data.password1 = data.password1[:-1]
+        elif len(data.password1) > 18:
+            pass
+        else:
+            data.password1 += event.char
         
 def loginRedrawAll(canvas, data):
     canvas.create_rectangle(0,0,data.width,data.height,fill="green")
