@@ -11,7 +11,7 @@ import pickle
 def checkPassword(data):
     if data.password != data.confirmPassword:
         return "passwords must match!>:("
-    elif data.password == "" or data.username == "" or data.bio == "" or data.GPA == "" or data.school == "":
+    elif data.password == "" or data.username == "" or data.bio == "" or data.GPA == "" or data.school == "" or data.image == "":
         return "please fill in all fields"
     else: return True
 
@@ -80,13 +80,7 @@ def registerMousePressed(event, data):
     elif event.x>=3*data.width//4 and event.x<=3*data.width//4+2*data.size:
         if event.y<=data.height//4+2*data.size and event.y>=data.height//4:
             if checkPassword(data) == True:
-                image = processPicture(data.imageName)
-                data.myProfile = (data.username,data.password,data.GPA,data.school,data.bio,image)
-                data.profiles.add(data.myProfile)
-                writePickle(data)
-                setToString(data,data.myProfile)
-                writePickle(data)
-                data.mode = "home"
+                data.mode = "schedule"
     else:
         data.boxState = (False, "")
         
@@ -189,7 +183,14 @@ def registerRedrawAll(canvas, data):
     canvas.create_text(data.sizeX//2+10,data.sizeX+8.5*data.sizeY,anchor="nw",text=data.bio,fill="black")
     #image text
     canvas.create_rectangle(data.width//2,data.height//2,data.width-data.size,data.height-data.size,fill="black")
-    canvas.create_text(3*data.width/4-data.size//2,3*data.height/4-data.size//2,anchor="c",text="upload image",fill="white",activefill="yellow")
+    canvas.create_oval(2.3*data.size+data.width//2,data.size+data.height//2,data.width-3.5*data.size,data.height//2+3.5*data.size,width=3,outline="white")
+    canvas.create_line(355,data.height//2+3.5*data.size,355,data.height-data.size,width=3,fill="white")
+    canvas.create_line(355,data.height//2+120,300,data.height//2+160,width=3,fill="white")
+    canvas.create_line(355,data.height//2+120,400,data.height//2+160,width=3,fill="white")
+    canvas.create_text(355,data.height//2+60,anchor="center",text="O   O",font=("32"),fill="white")
+    canvas.create_line(335,data.height//2+80,355,data.height//2+90,375,data.height//2+80,smooth=1,width=3,fill="white")
+    canvas.create_text(3*data.width/4+data.size,8*data.height//9,anchor="c",text="       upload image\n(SPACE to take picture\n     ESC to return)",fill="white",activefill="yellow",font=("Comic Sans MS","8","bold"))
+    #Error box
     if checkPassword(data) == "passwords must match!>:(":
         canvas.create_rectangle(data.width-2*data.size,0,data.width,2*data.size,fill="red")
         canvas.create_text(data.width-2*data.size,data.size,anchor="w",text="passwords\nmust\nmatch!",font=("Comic Sans MS","12","bold"))

@@ -36,7 +36,7 @@ def writePickle2(data):
             matches = pickle.load(rfp)
             
     newMatch = data.match
-    #newMatch = ("Lauren","Bob")
+    #newMatch = ("Lauren","Bob","Monday","6pm","  Donner")
     matches.add(newMatch)
     
     with open(profilesFilename,"wb") as wfp:
@@ -44,9 +44,9 @@ def writePickle2(data):
     
     with open(profilesFilename,"rb") as rfp:
         matches = pickle.load(rfp)
-        
-        data.matches = matches
-        return matches
+    
+    data.matches = matches
+    return matches
     
 def writePickle3(data):
     profilesFilename = "messages.py"

@@ -6,6 +6,7 @@ from messaging import *
 from tkinter import *
 from PIL import ImageTk,Image 
 from pickleFile import * 
+from profile import *
 ####################################
 #From 112 website
 # customize these functions
@@ -18,6 +19,7 @@ def homeMousePressed(event, data):
     elif event.x>=10+data.width//3 and event.x<=2*data.width//3-10:
         if event.y>=2*data.size+data.height//2 and event.y<=data.height-2*data.size:
             writePickle3(data)
+            messageReader(data)
             data.mode = "messaging"
     elif event.x>=10 and event.x<=2*data.width//3-10:
         if event.y>=2*data.size+data.height//2 and data.height-2*data.size:
@@ -32,7 +34,19 @@ def homeRedrawAll(canvas, data):
     #Name
     canvas.create_text(data.width//2+10,data.size,anchor="nw",font=("Comic Sans MS","24","bold"),text="AndrewID: "+data.username)
     #Picture
-    canvas.create_image(10, 10, anchor="nw", image=data.image)
+    try:
+        if data.image != "":
+            canvas.create_image(10, 10, anchor="nw", image=data.image)
+        else:
+            canvas.create_image(10, 10, anchor="nw", image=data.myImage)
+    except: 
+        canvas.create_rectangle(10,10,data.width//2,data.height//2,fill="black")
+        canvas.create_oval(120-40,80-40,160,120,width=3,outline="white")
+        canvas.create_line(120,120,120,250,width=3,fill="white")
+        canvas.create_line(120,140,200,200,width=3,fill="white")
+        canvas.create_line(120,140,40,200,width=3,fill="white")
+        canvas.create_text(120,70,anchor="center",text="O   O",font=("32"),fill="white")
+        canvas.create_line(100,90,120,110,140,90,smooth=1,width=3,fill="white")
     #GPA
     canvas.create_text(data.width//2+10,2.5*data.size,anchor="nw",font=("Comic Sans MS","16","bold"),text="GPA: "+data.GPA)
     #College

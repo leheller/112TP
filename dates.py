@@ -15,6 +15,13 @@ def findMatches(data):
             pass
         elif match[1] == data.username and match[0] in people:
             data.myMatches.add(match) 
+            
+def getPlace(matches):
+    l1 = len(matches[0])
+    l2 = len(matches[1])
+    index = ((l1 + l2) * 1738 + 420) % 10
+    places = ["  iNoodle","  the Fence","  Walking to the Sky","  Sorrels","  ABP","  CFA Lawn","  the Exchange","  Number Garden","  Doherty 2315","  Donner Dungeon"]
+    return places[index]
 
 def dates(canvas,data):
     findMatches(data)
@@ -22,7 +29,7 @@ def dates(canvas,data):
     for matches in data.myMatches:
         day = matches[2]
         time = matches[3]
-        place = matches[4]
+        place = getPlace(matches)
         canvas.create_text(2*data.size,data.size+data.height//10*(i+1),fill="white",font=("Comic Sans MS","18","bold"),text=matches[0],anchor="n")
         canvas.create_text(data.width//4,data.size+data.height//10*(i+1),fill="white",font=("Comic Sans MS","16","bold"),text="  --->  "+day+time+place,anchor="nw")
         i += 1

@@ -1,6 +1,7 @@
 #Initial login/register page for when the app is opened
 import pickle
 from tkinter import *
+from profile import *
 import os
 # Basic Animation Framework from 112 website
 ####################################
@@ -8,9 +9,12 @@ import os
 ####################################
 
 def loginMousePressed(event, data):
+    img = Image.open("Logo.png")
+    data.img = ImageTk.PhotoImage(img) 
     if event.x>=data.width//2-data.sizeX1 and event.x<=data.width//2+data.sizeX1:
         if event.y>=data.height//2-data.sizeX1-20 and event.y<=data.height//2-data.sizeX1+20:
             if knownPerson(data) == True:
+                data.myImage = recreate(data,data.myProfile[6])
                 data.mode = "home"
         elif event.y>=data.height//2-data.sizeY1 and event.y<=data.height//2+data.sizeY1:
             data.boxState = (True,"username")
@@ -62,9 +66,10 @@ def loginKeyPressed(event, data):
             data.password1 += event.char
         
 def loginRedrawAll(canvas, data):
-    canvas.create_rectangle(0,0,data.width,data.height,fill="green")
+    #Logo
+    canvas.create_image(65, 0, anchor="nw", image=data.img)
     if knownPerson(data) == False:
-        canvas.create_text(data.width-3*data.size,data.size,text="unknown username\n or password",fill="red",anchor = "center")
+        canvas.create_text(data.width-2*data.size,data.size,text="unknown username\n or password",fill="red",anchor="center",font=("Comic Sans MS","12","bold"))
     #username box
     canvas.create_rectangle(data.width//2-data.sizeX1,data.height//2-data.sizeY1,\
         data.width//2+data.sizeX1,data.height//2+data.sizeY1,fill="white",\
@@ -73,21 +78,17 @@ def loginRedrawAll(canvas, data):
     canvas.create_rectangle(data.width//2-data.sizeX1,data.height//2+1.5*data.sizeY1,\
         data.width//2+data.sizeX1,data.height//2+3.5*data.sizeY1,fill="white",\
         activefill="yellow",width=2)
-    #Seeking@CMU
-    canvas.create_text(data.width//2,data.height//2-data.size1,anchor="c",\
-        font="ComicSans 28 bold",text="Seeking@CMU",fill="white")
     #login
     canvas.create_text(data.width//2,data.height//2-data.sizeX1,anchor="c",\
-        font="ComicSans 18 bold",text="login",fill="white",activefill="yellow")
+        font=("Comic Sans MS","18","bold"),text="login",fill="white",activefill="yellow")
     #register
     canvas.create_text(data.width//2,data.height//2+data.size1,anchor="c",\
-        font="ComicSans 18 bold",text="register",fill="white",\
+        font=("Comic Sans MS","18","bold"),text="register",fill="red",\
         activefill=data.color2)
     #username text
     canvas.create_text(data.width//2,data.height//2,anchor="c",text=data.username1)
+    canvas.create_text(data.width//2-data.sizeX1-10,data.height//2,anchor="e",font=("Comic Sans MS","18","bold"),fill="red",text="andrewID:")
     #password text
     canvas.create_text(data.width//2,data.height//2+2.5*data.sizeY1,anchor="c",text="*"*len(data.password1))
-    #if checkPassword(data) != True:
-        #canvas.create_rectangle(data.width-2*data.size,0,data.width,2*data.size,fill="red")
-        #canvas.create_text(data.width-2*data.size,data.size,anchor="w",text="passwords\nmust\nmatch!",font=("Comic Sans MS","12","bold"))
-
+    canvas.create_text(data.width//2-data.sizeX1-10,data.height//2+2.5*data.sizeY1,anchor="e",font=("Comic Sans MS","18","bold"),fill="red",text="password:")
+   

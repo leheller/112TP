@@ -37,8 +37,6 @@ def addMessages(data):
             break
     if check == False:
         messages.add(data.newMessage)    
-    print("\n")
-    print("UPDATED MESSAGES:",messages)
     data.messages = messages
     writePickle3(data)
     messageReader(data)
@@ -94,22 +92,22 @@ def messagingKeyPressed(event, data):
         data.text = ""
     elif event.keysym == "BackSpace":
         data.text = data.text[:-1]
-    elif len(data.text) > 26:
+    elif len(data.text) > 23:
         pass
     else:
         data.text += event.char
 
 def messagingRedrawAll(canvas, data):
-    messageReader(data)
-    canvas.create_rectangle(0,0,data.width,data.height,fill="green")
     canvas.create_image(0,0,anchor="nw",image=data.background)
     if len(data.mySent) == 0:
         canvas.create_text(data.width//2,data.height//2,anchor="center",text="NO MESSAGES:(",font=("Comic Sans MS","30","bold"))
     else:
         name = data.mySent[0][1]
         #text box
-        canvas.create_rectangle(10,data.height-10-2*data.size,data.width-10,data.height-10,fill="white")
+        canvas.create_rectangle(10,data.height-10-2*data.size,data.width//2,data.height-10,fill="white")
         canvas.create_text(11,data.height-35,text=data.text,font=("Comic Sans MS","16","bold"),anchor="w")
+        #Instructions
+        canvas.create_text(data.width//2+10,data.height-35,text="press ENTER\n  to send",font=("Comic Sans MS","10","bold"),anchor="w",fill="white")
         #messages
         messagingTexts(canvas,data)   
         #name
