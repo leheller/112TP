@@ -1,8 +1,20 @@
 #Initial login/register page for when the app is opened
-from cv2 import *
-from tkinter import *
-from PIL import ImageTk,Image  
+import random
 import pickle
+from tkinter import *
+from Register import *
+from schedule import *
+from login import *
+from home import *
+from profile import *
+from messaging import *
+from dates import *
+from cv2 import *
+from pickleFile import *
+from PIL import ImageTk,Image 
+import socket
+import threading
+from queue import Queue
 # Basic Animation Framework from 112 website
 ####################################
 # customize these functions
@@ -14,6 +26,7 @@ def loginMousePressed(event, data):
     if event.x>=data.width//2-data.sizeX1 and event.x<=data.width//2+data.sizeX1:
         if event.y>=data.height//2-data.sizeX1-20 and event.y<=data.height//2-data.sizeX1+20:
             if knownPerson(data) == True:
+                sorting(data,data.otherProfiles)
                 data.myImage = recreate(data,data.myProfile[6])
                 data.mode = "home"
         elif event.y>=data.height//2-data.sizeY1 and event.y<=data.height//2+data.sizeY1:

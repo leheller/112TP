@@ -1,7 +1,20 @@
 #Shows all of the matches you have and dates you have gone on/will go on
-from cv2 import *
+import random
+import pickle
 from tkinter import *
-from PIL import ImageTk,Image  
+from Register import *
+from schedule import *
+from login import *
+from home import *
+from profile import *
+from messaging import *
+from dates import *
+from cv2 import *
+from pickleFile import *
+from PIL import ImageTk,Image 
+import socket
+import threading
+from queue import Queue
 
 def findMatches(data):
     people = set()
@@ -14,7 +27,12 @@ def findMatches(data):
         if len(match) < 5:
             pass
         elif match[1] == data.username and match[0] in people:
-            data.myMatches.add(match) 
+            check = True
+            for ppl in data.myMatches:
+                if ppl[0] == match[0]:
+                    check = False
+            if check == True:
+                data.myMatches.add(match) 
             
 def getPlace(matches):
     l1 = len(matches[0])
@@ -30,9 +48,10 @@ def dates(canvas,data):
         day = matches[2]
         time = matches[3]
         if matches[4] == "SUPERMATCH":
-            canvas.create_text(2*data.size,data.size+data.height//10*(i+1),fill="white",font=("Comic Sans MS","22","bold"),text="SUPERMATCH!!!:  " + matches[0],anchor="n")
-            canvas.create_text(data.width//4,data.size+data.height//10*(i+1),fill="white",font=("Comic Sans MS","20","bold"),text="  --->  "+day+time+place,anchor="nw")
-            i += 1.5  
+            place = getPlace(matches)
+            canvas.create_text(5,data.size+data.height//10*(i+1),fill="white",font=("Comic Sans MS","18","bold"),text="SUPERMATCH!:  " + matches[0],anchor="nw")
+            canvas.create_text(data.width//2-10,data.size+data.height//10*(i+1),fill="white",font=("Comic Sans MS","16","bold"),text="  --->  "+day+time+place,anchor="nw")
+            i += 1 
         else:
             place = getPlace(matches)
             canvas.create_text(2*data.size,data.size+data.height//10*(i+1),fill="white",font=("Comic Sans MS","18","bold"),text=matches[0],anchor="n")

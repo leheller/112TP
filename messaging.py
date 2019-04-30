@@ -1,9 +1,22 @@
 #Direct messaging page between two clients
 
 # Basic Animation Framework
-from cv2 import *
+import random
+import pickle
 from tkinter import *
-from PIL import ImageTk,Image  
+from Register import *
+from schedule import *
+from login import *
+from home import *
+from profile import *
+from messaging import *
+from dates import *
+from cv2 import *
+from pickleFile import *
+from PIL import ImageTk,Image 
+import socket
+import threading
+from queue import Queue
 #From 112 website
 ####################################
 # customize these functions

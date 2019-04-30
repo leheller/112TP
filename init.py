@@ -1,5 +1,8 @@
-#Main function to run Seeking@CMU
-# Mode Demo
+#Init file contains mode dispatcher
+###########
+#profile_server.py citation comment
+#lines 23-50: adapted from mode dispatcher demo from 112 website
+###########
 import random
 import pickle
 from tkinter import *
@@ -10,17 +13,12 @@ from home import *
 from profile import *
 from messaging import *
 from dates import *
-from sorting import *
 from cv2 import *
 from pickleFile import *
 from PIL import ImageTk,Image 
 import socket
 import threading
 from queue import Queue
-####################################
-# mode dispatcher from 112 website
-####################################
-
 
 def initMousePressed(event, data):
     if (data.mode == "login"):  loginMousePressed(event, data)

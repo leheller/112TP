@@ -1,7 +1,20 @@
 # Basic Animation Framework
-from cv2 import *
+import random
+import pickle
 from tkinter import *
-from PIL import ImageTk,Image  
+from Register import *
+from schedule import *
+from login import *
+from home import *
+from profile import *
+from messaging import *
+from dates import *
+from cv2 import *
+from pickleFile import *
+from PIL import ImageTk,Image 
+import socket
+import threading
+from queue import Queue
 
 ####################################
 # customize these functions
@@ -38,6 +51,7 @@ def scheduleMousePressed(event, data):
                 writePickle(data)
                 setToString(data,data.myProfile)
                 writePickle(data)
+                sorting(data,data.otherProfiles)
                 data.mode = "home"
 
 def scheduleKeyPressed(event, data):
@@ -65,6 +79,6 @@ def scheduleRedrawAll(canvas, data):
     #Contune text
     canvas.create_text(8*data.width//9,data.height//2,anchor="center",text="continue",font=("Comic Sans MS","18","bold"),fill="white",activefill="yellow")
     if checkSchedule(data) == False:
-        canvas.create_rectangle(8*data.width//9-2*data.size,data.height//2-data.size,8*data.width//9+data.size,data.height//2+2*data.size,fill="red")
+        canvas.create_rectangle(8*data.width//9-2*data.size,data.height//2-data.size,8*data.width//9+1.5*data.size,data.height//2+2*data.size,fill="red")
         canvas.create_text(8*data.width//9,data.height//2,anchor="center",text="please fill in\nall fields",font=("Comic Sans MS","12","bold"))
         

@@ -1,10 +1,8 @@
-#############################
-# Sockets Server Demo
-# by Rohan Varma
-# adapted by Kyle Chin
-#From 112 website
-#############################
-
+#Server file 
+###########
+#profile_server.py citation comment
+#lines 6-74: adapted from sockets server demo by Rohan Varma on 112 website
+###########
 import socket
 import threading
 from queue import Queue
@@ -39,9 +37,9 @@ def serverThread(clientele, serverChannel):
     msg = serverChannel.get(True, None)
     print("msg recv: ", msg)
     msgList = msg.split("&")
-    senderID = msgList[0] #john
-    instruction = msgList[1] #NewMessage
-    details = "&".join(msgList[2:]) #Rest of message
+    senderID = msgList[0] 
+    instruction = msgList[1] 
+    details = "&".join(msgList[2:])
     if (details != ""):
       for cID in clientele:
         if cID != senderID:

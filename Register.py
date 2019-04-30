@@ -1,7 +1,20 @@
 #Registration page where user creates an account and profile
-from cv2 import *
+import random
+import pickle
 from tkinter import *
-from PIL import ImageTk,Image  
+from Register import *
+from schedule import *
+from login import *
+from home import *
+from profile import *
+from messaging import *
+from dates import *
+from cv2 import *
+from pickleFile import *
+from PIL import ImageTk,Image 
+import socket
+import threading
+from queue import Queue
 # Basic Animation Framework from 112 website
 ####################################
 # customize these functions
@@ -124,15 +137,13 @@ def registerKeyPressed(event, data):
         if event.keysym == "BackSpace":
             data.bio = data.bio[:-1]
             data.counter -= 1
-        elif data.counter > 20:
-            data.bio += "\n" + event.char
-            data.counter = 0
-            data.counter2 += 1
-        elif data.counter2 > 7:
-            pass
         else:
             if event.char == "&":
                 pass
+            elif len(data.bio) > 120:
+                pass
+            elif len(data.bio) % 20 == 0:
+                data.bio += "\n"
             else:
                 data.bio += event.char
                 data.counter += 1

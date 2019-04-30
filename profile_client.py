@@ -1,19 +1,27 @@
-#############################
-# Sockets Client Demo
-# by Rohan Varma
-# adapted by Kyle Chin
-#from 112 website
-#############################
+#Client file that runs the entire program
+###########
+#profile_client.py citation comment
+#lines 25-199: adapted from sockets client demo by Rohan Varma on 112 website
+#lines 47-140: structure still from sockets demo but heavily reconstructed by me
+###########
 from init import *
+from login import *
+from Register import *
+from schedule import *
+from home import *
+from profile import *
+from messaging import *
+from dates import *
+import pickle
 import socket
 import threading
-from messaging import *
 from queue import Queue
 from cv2 import *
 from tkinter import *
 from PIL import ImageTk,Image 
 import random 
 
+#Sets up socket stuff
 HOST = "" # put your IP address here if playing on multiple computers
 PORT = 50003
 
@@ -21,7 +29,7 @@ server = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 
 server.connect((HOST,PORT))
 print("connected to server")
-
+#Receives messages from server
 def handleServerMsg(server, serverMsg):
   server.setblocking(1)
   msg = ""
@@ -35,11 +43,7 @@ def handleServerMsg(server, serverMsg):
       serverMsg.put(readyMsg)
       command = msg.split("\n")
 
-####################################
-# customize these functions
-#from 112 website
-####################################
-
+#Init for whole program
 def init(data):
     data.mode = "login"
     data.sizeX1 = 70
@@ -84,59 +88,62 @@ def init(data):
         schedule[day] = ""
     data.schedule = schedule
 
+#Mouse pressed for entire program
 def mousePressed(event, data):
     data.background = PhotoImage(file = "no-image-event.gif")
     initMousePressed(event,data)
 
+#Keypressed for entire program
 def keyPressed(event, data):
     initKeyPressed(event,data)
 
+#Executes instructions from server
 def timerFired(data):
-    # timerFired receives instructions and executes them
     while (serverMsg.qsize() > 0):
         msg = serverMsg.get(False)
-        #try:
-        print("received: ", msg)
-        msg = msg.split("&")
-        command = msg[0]
+        try:
+            print("received: ", msg)
+            msg = msg.split("&")
+            command = msg[0]
+            #Recreates and adds new profile to existing profiles
+            if (command == "NewProfile"):
+                myPID = msg[1]
+                name = msg[2]
+                password = msg[3]
+                GPA = msg[4]
+                college = msg[5]
+                bio = msg[6]
+                schedule = tuple(msg[7:21])
+                image = tuple(msg[21:])
+                profile = (name,password,GPA,college,bio,schedule,image)
+                data.profiles.add(profile)
+                writePickle(data)
+            #Recreates and adds new match to existing matches    
+            elif (command == "Match"):
+                myPID = msg[1]
+                name1 = msg[2]
+                name2 = msg[3]
+                day = msg[4]
+                time = msg[5]
+                place = msg[6]
+                match = (name1,name2,day,time,place)
+                data.matches.add(match)
+                writePickle2(data)
+            #Recreates and adds new message to existing messages    
+            elif (command == "NewMessage"):
+                myPID = msg[1]
+                name1 = msg[2]
+                name2 = msg[3]
+                text = msg[4]
+                message = (name1,name2,text)
+                data.newMessage = message
+                addMessages(data)
         
-        if (command == "NewProfile"):
-            myPID = msg[1]
-            name = msg[2]
-            password = msg[3]
-            GPA = msg[4]
-            college = msg[5]
-            bio = msg[6]
-            schedule = tuple(msg[7:21])
-            image = tuple(msg[21:])
-            profile = (name,password,GPA,college,bio,schedule,image)
-            data.profiles.add(profile)
-            writePickle(data)
-            
-        elif (command == "Match"):
-            myPID = msg[1]
-            name1 = msg[2]
-            name2 = msg[3]
-            day = msg[4]
-            time = msg[5]
-            place = msg[6]
-            match = (name1,name2,day,time,place)
-            data.matches.add(match)
-            writePickle2(data)
-            
-        elif (command == "NewMessage"):
-            myPID = msg[1]
-            name1 = msg[2]
-            name2 = msg[3]
-            text = msg[4]
-            message = (name1,name2,text)
-            data.newMessage = message
-            addMessages(data)
-        
-        #except:
-           #print("failed")
-        #serverMsg.task_done()
+        except:
+           print("failed")
+        serverMsg.task_done()
 
+#Draws canvas for entire function
 def redrawAll(canvas, data):
     initRedrawAll(canvas,data)
 
