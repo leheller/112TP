@@ -1,7 +1,7 @@
 #Shows all of the matches you have and dates you have gone on/will go on
+from cv2 import *
 from tkinter import *
-import random
-import pickle
+from PIL import ImageTk,Image  
 
 def findMatches(data):
     people = set()
@@ -29,10 +29,15 @@ def dates(canvas,data):
     for matches in data.myMatches:
         day = matches[2]
         time = matches[3]
-        place = getPlace(matches)
-        canvas.create_text(2*data.size,data.size+data.height//10*(i+1),fill="white",font=("Comic Sans MS","18","bold"),text=matches[0],anchor="n")
-        canvas.create_text(data.width//4,data.size+data.height//10*(i+1),fill="white",font=("Comic Sans MS","16","bold"),text="  --->  "+day+time+place,anchor="nw")
-        i += 1
+        if matches[4] == "SUPERMATCH":
+            canvas.create_text(2*data.size,data.size+data.height//10*(i+1),fill="white",font=("Comic Sans MS","22","bold"),text="SUPERMATCH!!!:  " + matches[0],anchor="n")
+            canvas.create_text(data.width//4,data.size+data.height//10*(i+1),fill="white",font=("Comic Sans MS","20","bold"),text="  --->  "+day+time+place,anchor="nw")
+            i += 1.5  
+        else:
+            place = getPlace(matches)
+            canvas.create_text(2*data.size,data.size+data.height//10*(i+1),fill="white",font=("Comic Sans MS","18","bold"),text=matches[0],anchor="n")
+            canvas.create_text(data.width//4,data.size+data.height//10*(i+1),fill="white",font=("Comic Sans MS","16","bold"),text="  --->  "+day+time+place,anchor="nw")
+            i += 1
 
 def datesMousePressed(event, data):
     if event.x>=10 and event.x<=data.size+10:

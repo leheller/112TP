@@ -2,9 +2,6 @@
 from cv2 import *
 from tkinter import *
 from PIL import ImageTk,Image  
-from pickleFile import *
-from Register import *
-import pickle
 
 ####################################
 # customize these functions

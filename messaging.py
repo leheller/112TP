@@ -1,8 +1,9 @@
 #Direct messaging page between two clients
 
 # Basic Animation Framework
+from cv2 import *
 from tkinter import *
-from pickleFile import *
+from PIL import ImageTk,Image  
 #From 112 website
 ####################################
 # customize these functions
@@ -89,6 +90,7 @@ def messagingKeyPressed(event, data):
         data.newMessage = (data.username,data.mySent[0][1],data.text)
         addMessages(data)
         setToString3(data,data.newMessage)
+        print("switching?")
         data.text = ""
     elif event.keysym == "BackSpace":
         data.text = data.text[:-1]

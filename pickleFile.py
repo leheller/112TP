@@ -24,7 +24,7 @@ def writePickle(data):
     for profile in profiles:
         if profile[0] != data.username:
             otherProfiles += [profile]
-    data.otherProfiles = list(otherProfiles)
+    sorting(data, otherProfiles)
     data.profiles = profiles
     return profiles
     
@@ -36,6 +36,8 @@ def writePickle2(data):
             matches = pickle.load(rfp)
             
     newMatch = data.match
+    if data.match2 != ():
+        matches.add(data.match2)
     #newMatch = ("Lauren","Bob","Monday","6pm","  Donner")
     matches.add(newMatch)
     

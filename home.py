@@ -1,12 +1,9 @@
 #Home screen, shows profile
 
-# Basic Animation Framework
-from cv2 import *
-from messaging import *
+# Basic Animation Framework 
 from tkinter import *
-from PIL import ImageTk,Image 
-from pickleFile import * 
-from profile import *
+from cv2 import *
+from PIL import ImageTk,Image  
 ####################################
 #From 112 website
 # customize these functions
@@ -15,6 +12,7 @@ from profile import *
 
 def homeMousePressed(event, data):
     if event.x>=(10+2*data.width//3) and event.y>=(2*data.size+data.height//2) and event.x<=(data.width-10) and event.y<=(data.height-2*data.size):
+        data.profileImage = recreate(data, data.otherProfiles[0][6])
         data.mode = "profile"
     elif event.x>=10+data.width//3 and event.x<=2*data.width//3-10:
         if event.y>=2*data.size+data.height//2 and event.y<=data.height-2*data.size:
@@ -23,6 +21,7 @@ def homeMousePressed(event, data):
             data.mode = "messaging"
     elif event.x>=10 and event.x<=2*data.width//3-10:
         if event.y>=2*data.size+data.height//2 and data.height-2*data.size:
+            autoMatch(data)
             data.mode = "dates"
             
 def homeKeyPressed(event, data):

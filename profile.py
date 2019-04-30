@@ -1,10 +1,8 @@
 #Profile page for all of the potential matches
-from pickleFile import *
-from messaging import *
-from tkinter import *
-import random
 from cv2 import *
-from PIL import ImageTk,Image 
+from tkinter import *
+from PIL import ImageTk,Image  
+
 
 def createSchedule(s):
     s = s.split('&')

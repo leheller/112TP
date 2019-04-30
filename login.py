@@ -1,8 +1,8 @@
 #Initial login/register page for when the app is opened
-import pickle
+from cv2 import *
 from tkinter import *
-from profile import *
-import os
+from PIL import ImageTk,Image  
+import pickle
 # Basic Animation Framework from 112 website
 ####################################
 # customize these functions

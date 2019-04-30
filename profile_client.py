@@ -11,7 +11,8 @@ from messaging import *
 from queue import Queue
 from cv2 import *
 from tkinter import *
-from PIL import ImageTk,Image  
+from PIL import ImageTk,Image 
+import random 
 
 HOST = "" # put your IP address here if playing on multiple computers
 PORT = 50003
@@ -34,10 +35,6 @@ def handleServerMsg(server, serverMsg):
       serverMsg.put(readyMsg)
       command = msg.split("\n")
 
-
-from tkinter import *
-from message import *
-import random
 ####################################
 # customize these functions
 #from 112 website
@@ -74,6 +71,7 @@ def init(data):
     data.profiles = ()
     data.matches = set()
     data.match = ()
+    data.match2 = ()
     data.myProfile = ()
     data.image = ""
     data.myMatches = set()

@@ -2,8 +2,6 @@
 from cv2 import *
 from tkinter import *
 from PIL import ImageTk,Image  
-from pickleFile import *
-import pickle
 # Basic Animation Framework from 112 website
 ####################################
 # customize these functions
