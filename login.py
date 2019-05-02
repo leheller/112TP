@@ -1,4 +1,10 @@
 #Initial login/register page for when the app is opened
+###########
+#login.py citation comment
+#basic animation framework from 112 website
+#lines 8-117: original code
+#lines 56,57: pickle modules from pickle library (found at https://docs.python.org/3/library/pickle.html)
+###########
 import random
 import pickle
 from tkinter import *
@@ -15,17 +21,17 @@ from PIL import ImageTk,Image
 import socket
 import threading
 from queue import Queue
-# Basic Animation Framework from 112 website
-####################################
-# customize these functions
-####################################
 
+# Basic Animation Framework from 112 website
 def loginMousePressed(event, data):
     img = Image.open("Logo.png")
     data.img = ImageTk.PhotoImage(img) 
+    img2 = Image.open("smallLogo.png")
+    data.logo = ImageTk.PhotoImage(img2) 
     if event.x>=data.width//2-data.sizeX1 and event.x<=data.width//2+data.sizeX1:
         if event.y>=data.height//2-data.sizeX1-20 and event.y<=data.height//2-data.sizeX1+20:
             if knownPerson(data) == True:
+                #Sorts other profiles with sorting algorithm
                 sorting(data,data.otherProfiles)
                 data.myImage = recreate(data,data.myProfile[6])
                 data.mode = "home"
@@ -42,22 +48,26 @@ def loginMousePressed(event, data):
             data.mode = "Register"
     else:
         data.boxState = (False, 0, 0)
-        
+
+#Determines if person logging in already has an account        
 def knownPerson(data):
     profilesFilename = "profiles.py"
+    #retreives profiles from pickle file
     with open(profilesFilename,"rb") as rfp:
         profiles = pickle.load(rfp)
         data.profiles = profiles
     data.otherProfiles = list(data.profiles)
+    #Determines in the profile is recognizable
     for ppl in data.otherProfiles:
-        if ppl[0] == data.username1 and ppl[1] == data.password1:
-            data.myProfile = ppl
-            data.username = ppl[0]
-            data.GPA = ppl[2]
-            data.school = ppl[3]
-            data.bio = ppl[4]
-            data.otherProfiles.remove(data.myProfile)
-            return True
+        if len(ppl) > 1:
+            if ppl[0] == data.username1 and ppl[1] == data.password1:
+                data.myProfile = ppl
+                data.username = ppl[0]
+                data.GPA = ppl[2]
+                data.school = ppl[3]
+                data.bio = ppl[4]
+                data.otherProfiles.remove(data.myProfile)
+                return True
     return False
         
 def loginKeyPressed(event, data):
@@ -81,6 +91,7 @@ def loginKeyPressed(event, data):
 def loginRedrawAll(canvas, data):
     #Logo
     canvas.create_image(65, 0, anchor="nw", image=data.img)
+    #Error message
     if knownPerson(data) == False:
         canvas.create_text(data.width-2*data.size,data.size,text="unknown username\n or password",fill="red",anchor="center",font=("Comic Sans MS","12","bold"))
     #username box

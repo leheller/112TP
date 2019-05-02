@@ -1,6 +1,9 @@
 #Direct messaging page between two clients
-
-# Basic Animation Framework
+###########
+#messaging.py citation comment
+#basic animation framework from 112 website
+#lines 7-152: original code
+###########
 import random
 import pickle
 from tkinter import *
@@ -17,22 +20,24 @@ from PIL import ImageTk,Image
 import socket
 import threading
 from queue import Queue
-#From 112 website
-####################################
-# customize these functions
-####################################
+
+#separates the messages into what the user has sent and received
 def messageReader(data):
     myName = data.username
     mySent = []
     myReceived = []
     for message in data.messages:
-        if message[0] == myName: 
+        if message[0] == myName and message[1] == data.currentMessenger:
+            mySent.insert(0,message)
+        elif message[0] == myName: 
             mySent += [message]
         elif message[1] == myName:
             myReceived += [message]
     data.mySent = mySent
     data.myReceived = myReceived
-    
+
+#SUPER COMPLEX PART:
+#takes tuples of individual messages and adds them to existing message groups
 def addMessages(data):
     messages = data.messages
     person1 = data.newMessage[0]
@@ -40,30 +45,39 @@ def addMessages(data):
     text = data.newMessage[2]
     check = False
     for mes in messages:
+        #finds messages sent and received from same person to/from user
         if mes[0] == person1 and mes[1] == person2:
             messages.remove(mes)
             mes2 = [person1,person2,text]
+            #adds messages to temporary list
             for texts in mes[2:]:
                 mes2 += [texts]
             message = tuple(mes2)
+            #adds new tuple back to messages
             messages.add(message)
             check = True
             break
+    #adds original message tuple if messages between people do not yet exist
     if check == False:
-        messages.add(data.newMessage)    
+        messages.add(data.newMessage)  
+    #saves updated messages to pickle file
     data.messages = messages
+    data.currentMessenger = person2 
     writePickle3(data)
     messageReader(data)
-    
+
+#retreives other messages from same person    
 def messageReaderReverse(data, oneMessage):
     otherName = oneMessage[1]
     for message in data.messages:
         if message[0] == otherName:
             messages = message[2:]
     return messages
-    
+
+#writes messages on canvas    
 def messagingTexts(canvas,data):
     i = 0
+    #texts that user sent (right)
     for text in data.mySent[0][2:]:
         x1 = 2*data.width//3 - 10
         x2 = data.width - 10
@@ -72,9 +86,10 @@ def messagingTexts(canvas,data):
         x3 = 5*data.width//6 - 10
         y3 = data.height-4.2*data.size - i*data.size
         canvas.create_rectangle(x1,y1,x2,y2,fill="white")
-        canvas.create_text(x3,y3,font=("Comic Sans MS","12","bold"),anchor="center",text=text)
+        canvas.create_text(x3,y3,font=("Comic Sans MS","12","bold"),anchor="center",text=text,fill="forestgreen")
         i += 2
     i = 0
+    #texts that other person sent to user (left)
     for ppl in data.myReceived:
         if ppl[0] == data.mySent[0][1]:
             for text in ppl[2:]:
@@ -84,8 +99,8 @@ def messagingTexts(canvas,data):
                 y2 = y1 + 1.5*data.size
                 x3 = data.width//6 - 10
                 y3 = data.height-4.2*data.size - i*data.size
-                canvas.create_rectangle(x1,y1,x2,y2,fill="white")
-                canvas.create_text(x3,y3,font=("Comic Sans MS","12","bold"),anchor="center",text=text)
+                canvas.create_rectangle(x1,y1,x2,y2,fill="forestgreen")
+                canvas.create_text(x3,y3,font=("Comic Sans MS","12","bold"),anchor="center",text=text,fill="white")
                 i += 2
 
 def messagingMousePressed(event, data):
@@ -95,11 +110,13 @@ def messagingMousePressed(event, data):
     elif event.x>=2*data.width//3+10 and event.x<=10+2*data.width//3+3.5*data.size:
         if event.y>=3*data.height//4 + 20:
             if len(data.mySent) > 0:
+                #switching between people
                 lastPerson = data.mySent.pop(0)
                 data.mySent.append(lastPerson)
 
 def messagingKeyPressed(event, data):
     if event.keysym == "Return":
+        #sends text to server and saves it
         data.newMessage = (data.username,data.mySent[0][1],data.text)
         addMessages(data)
         setToString3(data,data.newMessage)

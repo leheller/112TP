@@ -1,7 +1,7 @@
-#Server file 
+#Server file receives and sends messages from/to clients
 ###########
 #profile_server.py citation comment
-#lines 6-74: adapted from sockets server demo by Rohan Varma on 112 website
+#lines 6-73: adapted from sockets server demo by Rohan Varma on 112 website
 ###########
 import socket
 import threading

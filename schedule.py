@@ -1,4 +1,9 @@
-# Basic Animation Framework
+#Scheduling page where new users fill out a weekly schedule for when they can meet
+###########
+#schedule.py citation comment
+#basic animation framework from 112 website
+#lines 7-99: original code
+###########
 import random
 import pickle
 from tkinter import *
@@ -16,15 +21,24 @@ import socket
 import threading
 from queue import Queue
 
-####################################
-# customize these functions
-####################################
+#Turns the image into a cropped grayscale list of pixels
+def processPicture(image):
+    img = Image.open(image)
+    cropped = img.crop([520, 270, 760, 510]).convert('LA')
+    data = list(cropped.getdata(0))
+    s = ""
+    for px in data:
+        s += str(px) + "&"
+    return s
+
+#Turns the schedule from a dictionary to a string
 def processSchedule(d):
     s = ""
     for day in d:
         s += day + "&" + d[day] + "&"
     return s
-    
+
+#Makes sure schedule is completely filled out    
 def checkSchedule(data):
     counter = 0
     for day in ["Monday:","Tuesday:","Wednesday:","Thursday:","Friday:","Saturday:","Sunday:"]:
@@ -34,6 +48,7 @@ def checkSchedule(data):
 
 def scheduleMousePressed(event, data):
     i = 2
+    #Clicking in boxes
     for day in ["Monday:","Tuesday:","Wednesday:","Thursday:","Friday:","Saturday:","Sunday:"]:
         j = 0
         for time in ["6pm","7pm","8pm","9pm","10pm","11pm"]: 
@@ -41,6 +56,7 @@ def scheduleMousePressed(event, data):
                 data.schedule[day] = time
             j += 1.5
         i += 1.75
+    #Continue to home page
     if event.x > 8*data.width//9 - data.size and event.x < 8*data.width//9 + data.size:
         if event.y > data.height//2 - data.size and event.y < data.height//2 + data.size:
             if checkSchedule(data) == True:

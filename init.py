@@ -1,7 +1,7 @@
 #Init file contains mode dispatcher
 ###########
 #profile_server.py citation comment
-#lines 23-50: adapted from mode dispatcher demo from 112 website
+#lines 24-54: adapted from mode dispatcher demo from 112 website
 ###########
 import random
 import pickle
@@ -13,6 +13,7 @@ from home import *
 from profile import *
 from messaging import *
 from dates import *
+from about import *
 from cv2 import *
 from pickleFile import *
 from PIL import ImageTk,Image 
@@ -28,6 +29,7 @@ def initMousePressed(event, data):
     elif (data.mode == "profile"): profileMousePressed(event, data)
     elif (data.mode == "messaging"): messagingMousePressed(event, data)
     elif (data.mode == "dates"): datesMousePressed(event, data)
+    elif (data.mode == "about"): aboutMousePressed(event, data)
 
 def initKeyPressed(event, data):
     if (data.mode == "login"):   loginKeyPressed(event, data)
@@ -36,6 +38,7 @@ def initKeyPressed(event, data):
     elif (data.mode == "home"): homeKeyPressed(event, data)
     elif (data.mode == "profile"): profileKeyPressed(event, data)
     elif (data.mode == "messaging"): messagingKeyPressed(event, data)
+    elif (data.mode == "about"): aboutKeyPressed(event, data)
 
 def initRedrawAll(canvas, data):
     if (data.mode == "login"): 
@@ -48,3 +51,4 @@ def initRedrawAll(canvas, data):
     elif (data.mode == "profile"): profileRedrawAll(canvas, data)
     elif (data.mode == "messaging"): messagingRedrawAll(canvas, data)
     elif (data.mode == "dates"): datesRedrawAll(canvas, data)
+    elif (data.mode == "about"): aboutRedrawAll(canvas, data)

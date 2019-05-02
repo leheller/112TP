@@ -5,11 +5,6 @@
 #TO DO:
 
 #camera screen
-#Clean up code
-#Citations
-#Reset users
-#Make users
-#Readme file
 #TP3
 ######
 
@@ -69,7 +64,7 @@ def drawCamera(canvas, data):
 
 def redrawAll(canvas, data):
     drawCamera(canvas, data)
-    canvas.create_rectangle(0,0,data.width//2,data.height//2,width=5,outline="red")
+    canvas.create_rectangle(data.width//4,data.height//4,3*data.width//4,3*data.height//4,width=5,outline="red")
 
 
 def run(width=300, height=300):

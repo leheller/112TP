@@ -1,0 +1,104 @@
+﻿Seeking@CMU
+My term project is a Tinder-like dating app specifically aimed towards CMU students. Users will be able to create a profile, and a sorting algorithm will bring potential matches to the front of the users feed so they can either “like” them or not. Matches will be made if two users like each other.
+
+
+Description:
+
+
+For my term project I am creating a CMU-specific dating app. The user will first need to sign up with a username and password, and then will be able to create a profile. The user will then be directed to a profile creation screen. To keep things simple for busy CMU students, the user will only need to input name, GPA, college, a picture, a short biography, and an optional resume. After completing the initial profile setup, the user will be taken to the main menu. Here they will see their own profile, and will be able to either enter their messages or see other users. If they choose to see other users, they will be taken to a screen showing another person’s profile. From here they can choose whether to “like” the person, send them a message, or click ahead to the next profile. If both users “like” each other, they will be asked when they are free and then told where to go on CMU’s campus and at what time to meet up. From the main screen, if the user decides to see their messages they will be able to send and receive messages from different users. 
+
+
+Other people’s profiles are sorted for the user based on GPA and college. Students with the most similar GPA to the user will be towards the top of the list, while less similar GPAs will be at the bottom. It will also be sorted by college, so that students in the same college take precedence over GPA similarity, and will be at the top regardless of GPA. I will be using sockets to send and receive profiles and messages between users.
+
+
+Features:
+
+
+* Sign in/sign up/creating a profile
+   * I will use Tkinter to make the entire user interface including the login and registration screen
+   * The animation will allow the user to type in information after they click on the desired box
+* Uploading a picture
+   * This will be used to upload the profile picture and the resume
+   * Store image filename as a string
+* Switching between screens
+   * I will store the state of each screen (either on or off), so that when one screen is on the others are off
+   * In redraw all I will be able to see which screen is on and only draw that one screen
+   * Clicking in certain boxes will change the screen state
+* Messaging
+   * I will use sockets to send and receive messages between users
+   * Text that is sent will appear in the message areas of both users
+   * Using Tkinter, I will have the text that is being written appear on the writer’s screen, and then it will send when the writer presses “return” 
+* Sending profiles between users
+   * When a new user creates a profile it must be sent to all other clients and sorted based on GPA and college
+   * I will send completed profiles after the new user clicks away from the creating profile screen
+   * The data from that screen will be stored in a list and sent using sockets
+   * The data that is received by a client will be used to create a visual profile that can be seen by the client in its sorted order
+
+
+User Experience/Interaction:
+
+
+The user will first interact with the app by logging in or registering. They will be able to click on the box to enter their information and type normally. After that, they will be able to create a profile and enter more information in the same way. To get to and from different screens there will be a buttons indicating what they lead to. There will always be an icon to click on if the user wishes to return to their profile. They will also be able to see their messages with other users and other profiles. Finally, other profiles can be seen and interacted with by messaging or “matching”.
+
+
+Competitive Analysis:
+
+
+Some of the other dating services I’ve looked at are Tinder and eharmony. My app will be à combination of both. Matches are made on Tinder only by people choosing for themselves, usually based on what the person in the profile picture looks like. Eharmony using a sorting algorithm to make matches for the user. My app will combine both of these ideas, using a sorting algorithm to suggest certain profiles by placing them at the front of the user feed.
+
+
+I have noticed from my own experiences using Tinder that it can be awkward deciding where to meet for a first date. When dating apps do not provide any structure for real life interaction between users, it makes the user uncomfortable and may even reduce the chance that the user will continue to use the service. Seeking@CMU will bypass this issue by giving the users a public location to meet on the CMU campus.
+
+
+Structural Plan:
+
+
+I will have a different file for each type of page (login, create profile, other people’s profiles, messaging, etc). Each of these files will hold only the information needed to run that page. I will have a master file that connects every part of the project from different files. This is the file I will run to open my app. I will also have a seperate file that holds all of the important functions such as the sorting algorithm and sockets code. 
+
+
+Timeline:
+
+
+* April 15 - TP1, sorting algorithm, sending text
+* April 18 - Image uploading and profile sending 
+* April 21 - Every type of screen looks good, changing screens
+* April 24 - TP2, changing screens, MVP
+* April 27 - Login/remembering accounts
+* April 30 - Determine location for meetup 
+* May 2 - TP3, readme file, video
+
+
+Version Control Plan:
+
+
+I will be backing up my saved files onto Github. I have a 112TP repository set up where I can save all of my files.
+  
+
+
+
+Module List:
+
+
+* Sockets
+* Tkinter
+* Open CV
+* PIL
+* Pickle
+
+
+  
+
+
+
+Design Update:
+Due to some complications with saving profiles to my server, I decided instead to make and update a pickle file with all of the information that is being sent from server to client. I actually have three pickle files, each holding a different set of information (profiles, matches, and messages). Separating the information into three files allows for a faster runtime since I do not need to update my pickle file with all of the information on every profile each time someone makes a change.
+I have also decided to use openCV for uploading and displaying an image. This makes the UI much cleaner so that nobody needs to manually type in a filename of their profile picture. The function I’m using opens your computer camera, takes a picture with the spacebar, and then closes and saves and displays the image. This also adds a layer of complexity since I am learning and using another module.
+
+
+
+
+TP3 Update:
+        I have added a number of features since TP2 including: a scheduling page and algorithm, supermatching, an “about this app” page, a number of checks and UX stuff, a logo, a special background, as well as a bunch of bug fixes and finishing sending images and messages over sockets and the sorting algorithm.
+        The scheduling algorithm changes my app from giving matched users a random day and place to meet, to a day and time when both users are free. This is more realistic and adds a lot of complexity to my code. Finding times that both users are free isn’t necessarily what is so complex about this process. There are many parts to this feature working together that makes it special. I am especially proud of this part. I added an entire new screen to the registration process when a user makes a new profile, where the user must input a time they are free each day. This data is turned into a string that is added to the profile, which is then also turned into a string and sent through the socket. When a profile is received, this string containing the entire profile is broken down into the schedule part. The schedule string is then turned into a dictionary to be compared to the schedule dictionaries of other users. When users match, the algorithm finds the best day and time to meet, and adds a semi-random place as well.
+        The supermatching algorithm is pretty cool too. As a user swipes through other profiles, if the other profile is a “super match”, a mutual match is created without the user needing to click on the matching button. Super matches occur if both users are in the same college, have GPAs within 0.2 of each other, and have a free day and time in common.
+        Some checks and fun UX stuff I added are making sure the program has all of the needed values in order to not crash. I does this by disabling mousepressed functionalities and telling the user they must fill in all fields before continuing. This happens in many places. I also added a logo I made as well as a page that describes what my app does.

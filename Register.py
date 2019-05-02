@@ -1,4 +1,12 @@
 #Registration page where user creates an account and profile
+###########
+#Register.py citation comment
+#basic animation framework from 112 website
+#lines 11-34: original code
+#lines 37-61: found on stackoverflow (https://stackoverflow.com/questions/34588464/python-how-to-capture-image-from-webcam-on-click-using-opencv)
+#lines 62-65: cv2 modules found in openCV library (can be found at https://docs.opencv.org/3.2.0/d4/da8/group__imgcodecs.html)
+#lines 65-208: original code
+###########
 import random
 import pickle
 from tkinter import *
@@ -15,10 +23,8 @@ from PIL import ImageTk,Image
 import socket
 import threading
 from queue import Queue
-# Basic Animation Framework from 112 website
-####################################
-# customize these functions
-####################################
+
+#Determines if the passwords match and that all fields are filled in
 def checkPassword(data):
     if data.password != data.confirmPassword:
         return "passwords must match!>:("
@@ -26,26 +32,17 @@ def checkPassword(data):
         return "please fill in all fields"
     else: return True
 
-def processPicture(image):
-    img = Image.open(image)
-    cropped = img.crop([520, 270, 760, 510]).convert('LA')
-    data = list(cropped.getdata(0))
-    s = ""
-    for px in data:
-        s += str(px) + "&"
-    print("DONE")
-    return s
-
 #The code in this function is from stackoverflow (https://stackoverflow.com/questions/34588464/python-how-to-capture-image-from-webcam-on-click-using-opencv)
+#Takes an image and saves it to init
 def takePicture(data):
     cam = cv2.VideoCapture(0)
-    cam.set(3,250)
-    cam.set(4,250)
     cv2.namedWindow("Seeking@CMU")
     img_counter = 0
     while True:
         ret, frame = cam.read()
-        cv2.imshow("test", frame)
+        i = cv2.resize(frame,(240,240))
+        cv2.imshow("Seeking@CMU", i)
+        #cv2.resizeWindow("Seeking@CMU", 20,20)
         if not ret:
             break
         k = cv2.waitKey(1)
@@ -61,11 +58,9 @@ def takePicture(data):
             img_counter += 1
     cam.release()
     cv2.destroyAllWindows()
-    #Next few lines inspired from online (https://stackoverflow.com/questions/52375035/cropping-an-image-in-tkinter/52375463#52375463)
     im = Image.open(img_name).convert('LA')
     cropped = im.crop([520, 270, 760, 510])
     data.image = ImageTk.PhotoImage(cropped) 
-    print(data.image)
     data.imageName = img_name
 
 def registerMousePressed(event, data):

@@ -1,8 +1,8 @@
-#Client file that runs the entire program
+#Client file that runs the entire program & sends and receives messages to/from server
 ###########
 #profile_client.py citation comment
-#lines 25-199: adapted from sockets client demo by Rohan Varma on 112 website
-#lines 47-140: structure still from sockets demo but heavily reconstructed by me
+#lines 25-201: adapted from sockets client demo by Rohan Varma on 112 website
+#lines 46-150: structure still from sockets demo but heavily reconstructed by me
 ###########
 from init import *
 from login import *
@@ -83,10 +83,12 @@ def init(data):
     data.myImage = ""
     data.profileImage = ""
     data.background = ""
+    data.logo = ""
     schedule = {}
     for day in ["Monday:","Tuesday:","Wednesday:","Thursday:","Friday:","Saturday:","Sunday:"]:
         schedule[day] = ""
     data.schedule = schedule
+    data.currentMessenger = ""
 
 #Mouse pressed for entire program
 def mousePressed(event, data):

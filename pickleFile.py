@@ -2,12 +2,45 @@
 #turn other data types into strings to be sent to the server
 ###########
 #pickleFile.py citation comment
-#lines 9-118: original code
-#lines 99,100,108,109,117,118 adapted from sockets manual on 112 website (https://kdchin.gitbooks.io/sockets-module-manual/)
+#lines 9-149: original code
+#lines 130,131,139,140,148,149 adapted from sockets manual on 112 website (https://kdchin.gitbooks.io/sockets-module-manual/)
 #individual pickle functions found on python.org (https://docs.python.org/3/library/pickle.html)
 ###########
 import pickle
 import os
+
+#Sorting algorithm to bring best possible matches to the front of the list
+def sorting(data, s):
+    college = []
+    rest = []
+    #separates profiles by if they are in the same college as the user or not
+    #stores them in the list as the difference in GPA
+    for ppl in s:
+        if len(ppl) > 1:
+            if ppl[3] == data.school:
+                diff = abs(float(ppl[2])-float(data.GPA))
+                college.append(diff)
+            else: 
+                diff = abs(float(ppl[2])-float(data.GPA))
+                rest.append(diff)
+    #sorts each list by difference in GPA
+    college.sort()
+    rest.sort()
+    #replaces GPA difference with entire matching profile
+    for ppl in s:
+        if len(ppl) > 1:
+            diff = abs(float(ppl[2])-float(data.GPA))
+            if ppl[3] == data.school:
+                for i in range(len(college)):
+                    if college[i] == diff:
+                        college[i] = ppl
+            else:
+                for i in range(len(rest)):
+                    if rest[i] == diff:
+                        rest[i] = ppl
+    #adds lists back together
+    data.otherProfiles = college + rest
+    
 
 #Saves new profiles to a pickle file and retreives every profile to be saved in init
 def writePickle(data):
@@ -29,9 +62,7 @@ def writePickle(data):
     #Creates list of profiles that are not current user
     otherProfiles = []
     for profile in profiles:
-        if len(profile) < 20:
-            profiles.remove(profile)
-        elif profile[0] != data.username:
+        if len(profile)>1 and profile[0] != data.username:
             otherProfiles += [profile]
     #Saves sorted list of profiles to init
     sorting(data, otherProfiles)
